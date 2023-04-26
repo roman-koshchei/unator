@@ -21,8 +21,6 @@ public interface ICategoryRepository : IRepository<Category>
 // CategoryRepository.cs
 public class CategoryRepository : BaseRepository<Category>, ICategoryRepository
 {
-  public CategoryRepository(BidMeDbContext context) : base(context) {}
-
   public async Task<Category?> GetById(int id) {
     return await Entities
       .Include(c => c.Lots)
