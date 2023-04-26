@@ -7,7 +7,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Folder Include="EntityFrameworkCore\" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore" Version="6.0.16" />
   </ItemGroup>
 
 </Project>
