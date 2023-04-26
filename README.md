@@ -2,14 +2,13 @@
 
 # Unator
 
-Breaking mistaken standarts of enterprice such as Repository pattern.
-My goal is to provide set of functions/classes to make development transparent and logical.
+Breaking mistaken standards of enterprise such as Repository pattern. My goal is to provide a set of functions/classes to make development transparent and logical.
 
 ## Examples
 
 ### Repository
 
-That's my favorite. You create a ton of files for Repositories and files with interfaces for them, even if it has just 1 method. You should not forget to add them to DI (that's what my team did several times). And almost all of them are soooo similar. Let's take a look:
+That's my favorite. You create a ton of files for Repositories and files with interfaces for them, even if it has just 1 method. You should not forget to add them to DI (that's what my team did several times). And almost all of them are so similar. Let's take a look:
 
 ```csharp
 // ICategoryRepository.cs
@@ -64,7 +63,7 @@ public async Task<IResult> TestEdit(int id, string name)
 }
 ```
 
-Pretty massive if you remember you should do it for almost each table in database. So what is proposed by Unator.
+Pretty massive if you remember you should do it for almost every table in a database. So what is proposed by Unator?
 
 ```csharp
 // UQueryExtension.cs - universal for all tables
@@ -127,11 +126,11 @@ public async Task<IResult> TestEdit(int id, string name)
 }
 ```
 
-UQueryExtension makes it more clear, just providing smaller functions with ConfigureAwait(false). UMutationExtension looks strange and big at first. But remember that it's universal to all tables and you don't touch it a lot. We also do return Exception as possible value not throwing it. In my opinion there should not be layer between data and logic, DbContext is already good enough abstraction, Unator just make it more beautiful.
+UQueryExtension makes it more clear, just providing smaller functions with ConfigureAwait(false). UMutationExtension looks strange and big at first. But remember that it's universal to all tables and you don't touch it a lot. We also do return Exception as a possible value not throwing it. In my opinion, there should not be a layer between data and logic, DbContext is already a good enough abstraction, Unator just makes it more beautiful.
 
 ### Authorization
 
-Imagine you have authorization in a project. User id is always presented if user successfully authorized. But with standart ASP implementation you still should check it for null at endpoint marked with `Authorize` filter. This example isn't a big deal, accually.
+Imagine you have authorization for a project. The user id is always presented if the user is successfully authorized. But with standard ASP implementation, you still should check it for null at the endpoint marked with `Authorize` filter. This example isn't a big deal, actually.
 
 ```csharp
 [Authorize]
@@ -143,7 +142,7 @@ public async Task<IResult> Test()
 }
 ```
 
-With Unator you will get next piece of code. At the current moment Unator provides pure functions, but we think about classes just to make code more clear, but we want to keep code not fully Object Oriented and use classes as the way to group data.
+With Unator you will get the next piece of code. At the current moment, Unator provides pure functions, but we think about classes just to make the code clear, but we want to keep the code not fully Object Oriented and use classes as the way to group data.
 
 ```csharp
 // static functions
