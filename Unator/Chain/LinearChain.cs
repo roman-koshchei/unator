@@ -7,10 +7,11 @@ using System.Threading.Tasks;
 namespace Unator.Chain;
 
 /// <summary>
-/// Instead of calling next chain item inside of current, it returns result and pass it to next chain item.
-/// When you call next chain item inside you keep variables of current chain item alive while they are not nessasary.
-/// And you fill stack like in recursion.
-/// There is dynamic stuff under the hood, but because input and addition of new chain items is typesafe it's ok.
+/// Instead of calling the next chain item inside of the current,
+/// it returns a result and passes it to the next chain item.
+/// When you call the next chain item inside, keep variables of the current chain item alive while they are unnecessary.
+/// And you fill stack like in recursion. There is dynamic stuff under the hood,
+/// but because input and addition of new chain items are typesafe it's ok.
 /// I didn't find a way to make it without dynamics and linear at the same time.
 /// </summary>
 /// <remarks>
