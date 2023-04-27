@@ -4,9 +4,7 @@
 
 Breaking mistaken standards of enterprise such as Repository pattern. My goal is to provide a set of functions/classes to make development transparent and logical.
 
-## Examples
-
-### Repository
+## Repository
 
 That's my favorite. You create a ton of files for Repositories and files with interfaces for them, even if it has just 1 method. You should not forget to add them to DI (that's what my team did several times). And almost all of them are so similar. Let's take a look:
 
@@ -125,35 +123,3 @@ public async Task<IResult> TestEdit(int id, string name)
 ```
 
 UQueryExtension makes it more clear, just providing smaller functions with ConfigureAwait(false). UMutationExtension looks strange and big at first. But remember that it's universal to all tables and you don't touch it a lot. We also do return Exception as a possible value not throwing it. In my opinion, there should not be a layer between data and logic, DbContext is already a good enough abstraction, Unator just makes it more beautiful.
-
-### Authorization
-
-Imagine you have authorization for a project. The user id is always presented if the user is successfully authorized. But with standard ASP implementation, you still should check it for null at the endpoint marked with `Authorize` filter. This example isn't a big deal, actually.
-
-```csharp
-[Authorize]
-public async Task<IResult> Test()
-{
-  var uid = User.FindFirstValue(ClaimTypes.NameIdentifier);
-  if (uid == null) return Results.Unauthorized();
-  return Results.Ok();
-}
-```
-
-With Unator you will get the next piece of code. At the current moment, Unator provides pure functions, but we think about classes just to make the code clear, but we want to keep the code not fully Object Oriented and use classes as the way to group data.
-
-```csharp
-// static functions
-public async Task<IResult> Test(HttpRequest req, Db db)
-=> await U.Authorized(req,  db, async (uid) =>
-{
-  return U.Success();
-});
-
-// class in future, you setup DB in constructor
-public async Task<IResult> Test()
-=> await u.Authorized(async (uid) =>
-{
-  return u.Success();
-});
-```
