@@ -2,11 +2,14 @@
 
 # Unator
 
-Breaking mistaken standards of enterprise such as Repository pattern. My goal is to provide a set of functions/classes to make development transparent and logical.
+Breaking mistaken standards of enterprise such as Repository pattern.
+My goal is to provide a set of functions/classes to make development transparent and logical.
 
 ## Repository
 
-That's my favorite. You create a ton of files for Repositories and files with interfaces for them, even if it has just 1 method. You should not forget to add them to DI (that's what my team did several times). And almost all of them are so similar. Let's take a look:
+That's my favorite. You create a ton of files for Repositories and files with interfaces for them,
+even if it has just 1 method. You should not forget to add them to DI (that's what my team did several times).
+And almost all of them are so similar. Let's take a look:
 
 ```csharp
 // ICategoryRepository.cs
