@@ -46,7 +46,10 @@ public class LinearChain<TIn, TOut>
     public TOut Run(TIn input)
     {
         dynamic val = input;
-        foreach (var item in items) val = item(val);
+        foreach (var item in items)
+        {
+            val = item(val);
+        }
         return val;
     }
 
