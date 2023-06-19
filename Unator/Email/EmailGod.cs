@@ -24,14 +24,10 @@ public class EmailGod
     {
         this.senders = new List<UEmailSender>(senders.Length + 1) { sender };
         this.senders.AddRange(senders);
+        this.senders.Sort((a, b) => a.GetMonthLimit().CompareTo(b.GetMonthLimit()));
     }
 
-    public void Add(UEmailSender sender)
-    {
-        senders.Add(sender);
-    }
-
-    public Exception? Send(string from, string to, string subject, string html)
+    public async Task<Exception?> Send(string from, string to, string subject, string html)
     {
         try
         {
@@ -40,7 +36,7 @@ public class EmailGod
                 var sender = senders[i];
                 if (sender.IsLimitAllow())
                 {
-                    sender.SendEmail(from, to, subject, html);
+                    await sender.SendEmail(from, to, subject, html);
                     return null;
                 }
             }
@@ -52,6 +48,3 @@ public class EmailGod
         }
     }
 }
-
-public class LimitReachedException : Exception
-{ }

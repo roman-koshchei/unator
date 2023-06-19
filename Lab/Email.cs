@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Lab.Config;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -28,16 +29,39 @@ namespace Lab;
 public static class Email
 {
     /// <summary>
-    /// Start experiments with email sending
+    /// Start experiments with email sending.
     /// </summary>
     /// <returns></returns>
     public static async Task Start()
     {
-        var god = new EmailGod(new Resend("re_123456789"), new Brevo());
+        var god = new EmailGod(
+            new Resend(Secrets.ResendApiKey, new DateTime(2023, 6, 16), 1, 1), // 1,1 for testing
+            new Brevo(Secrets.BrevoApiKey, 1)
+        );
+
         //god.Add(new SendGrid());
         //god.Add(new Mailchimp());
         //god.Add(new Mailjet());
 
-        god.Send("romankoshchey@gmail.com", "romankoshchei@gmail.com", "testing", "html");
+        var error = await god.Send("roman@paragoda.tech", "romankoshchei@gmail.com", "Testing Email God 1", "<strong>It works!</strong>");
+
+        if (error != null)
+        {
+            Console.WriteLine(error.Message.ToString());
+        }
+
+        error = await god.Send("roman@paragoda.tech", "romankoshchei@gmail.com", "Testing Email God 2", "<strong>It works!</strong>");
+
+        if (error != null)
+        {
+            Console.WriteLine(error.Message.ToString());
+        }
+
+        error = await god.Send("roman@paragoda.tech", "romankoshchei@gmail.com", "Testing Email God 3", "<strong>Should fail!</strong>");
+
+        if (error != null)
+        {
+            Console.WriteLine(error.Message.ToString());
+        }
     }
 }

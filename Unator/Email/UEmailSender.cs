@@ -10,5 +10,7 @@ public interface UEmailSender
 {
     public bool IsLimitAllow();
 
+    public long GetMonthLimit();
+
     public Task<Exception?> SendEmail(string from, string to, string subject, string html);
 }
