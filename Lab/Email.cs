@@ -13,8 +13,8 @@ namespace Lab;
     Services I am looking at now:
     |                                                       | Free limit               |
     | ----------------------------------------------------- | ------------------------ |
-    | [Resend] (https://resend.com/)                        | 3000/month (max 100/day) |
-    | [Brevo] (https://www.brevo.com/)                      | 300/day                  |
+  + | [Resend] (https://resend.com/)                        | 3000/month (max 100/day) |
+  + | [Brevo] (https://www.brevo.com/)                      | 300/day                  |
     | [SendGrid] (https://sendgrid.com/)                    | 100/day                  |
     | [Mailchimp] (https://mailchimp.com/)                  | 1000/month (max 500/day) |
     | [Mailjet] (https://www.mailjet.com/)                  | 6000/month (max 200/day) |
