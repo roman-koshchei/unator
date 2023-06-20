@@ -6,17 +6,21 @@ using System.Threading.Tasks;
 
 namespace Unator.Email;
 
-public interface ULimiter
+public interface ILimiter
 {
     /// <summary>
     /// Ensure that limits and it right state and check if limit allow to send new email.
     /// </summary>
+    /// <returns>true if limit allows, false otherwise</returns>
     bool IsLimitAllow();
 
+    /// <summary>
+    /// Increment limiter. Is called if email is sent successfully.
+    /// </summary>
     void IncrementLimiter();
 }
 
-public class MonthLimiter : ULimiter
+public class MonthLimiter : ILimiter
 {
     private readonly long monthLimit;
     private long monthUsed = 0;
@@ -57,7 +61,7 @@ public class MonthLimiter : ULimiter
     }
 }
 
-public class DayLimiter : ULimiter
+public class DayLimiter : ILimiter
 {
     private readonly int dayLimit;
     private int dayUsed = 0;

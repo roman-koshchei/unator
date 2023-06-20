@@ -35,29 +35,29 @@ public static class Email
     public static async Task Start()
     {
         var god = new EmailGod(
-            new Resend(Secrets.ResendApiKey, new DateTime(2023, 6, 16), 1, 1), // 1,1 for testing
-            new Brevo(Secrets.BrevoApiKey, 1)
+            new EmailService(new Resend(Secrets.ResendApiKey), new DayLimiter(1), new MonthLimiter(new DateTime(2023, 6, 19), 1)),
+            new EmailService(new Brevo(Secrets.BrevoApiKey), new DayLimiter(1)),
+            new EmailService(new Mailjet(Secrets.MailjetApiKey, Secrets.MailjetSecret), new DayLimiter(1), new MonthLimiter(new DateTime(2023, 6, 19), 6000))
         );
 
         //god.Add(new SendGrid());
         //god.Add(new Mailchimp());
-        //god.Add(new Mailjet());
 
-        var error = await god.Send("roman@paragoda.tech", "romankoshchei@gmail.com", "Testing Email God 1", "<strong>It works!</strong>");
-
-        if (error != null)
-        {
-            Console.WriteLine(error.Message.ToString());
-        }
-
-        error = await god.Send("roman@paragoda.tech", "romankoshchei@gmail.com", "Testing Email God 2", "<strong>It works!</strong>");
+        var error = await god.SendOne("roman@paragoda.tech", "romankoshchei@gmail.com", "Testing Email God 1", "<strong>It works!</strong>");
 
         if (error != null)
         {
             Console.WriteLine(error.Message.ToString());
         }
 
-        error = await god.Send("roman@paragoda.tech", "romankoshchei@gmail.com", "Testing Email God 3", "<strong>Should fail!</strong>");
+        error = await god.SendOne("roman@paragoda.tech", "romankoshchei@gmail.com", "Testing Email God 2", "<strong>It works!</strong>");
+
+        if (error != null)
+        {
+            Console.WriteLine(error.Message.ToString());
+        }
+
+        error = await god.SendOne("roman@paragoda.tech", "romankoshchei@gmail.com", "Testing Email God 3", "<strong>It works!</strong>");
 
         if (error != null)
         {

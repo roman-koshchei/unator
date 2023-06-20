@@ -11,33 +11,39 @@ namespace Unator.Email;
 /// Add as much as possible of email sending services.
 /// And then get as much emails as possible for lowest price
 /// </summary>
-public class EmailGod
+public class EmailGod : UEmailSender
 {
-    private readonly List<UEmailSender> senders;
+    private readonly List<EmailService> services;
 
     /// <summary>
     /// Require at least 1 sender.
     /// </summary>
-    /// <param name="sender">Required sender</param>
-    /// <param name="senders">All other senders</param>
-    public EmailGod(UEmailSender sender, params UEmailSender[] senders)
+    /// <param name="service">Required sender</param>
+    /// <param name="services">All other senders</param>
+    public EmailGod(EmailService service, params EmailService[] services)
     {
-        this.senders = new List<UEmailSender>(senders.Length + 1) { sender };
-        this.senders.AddRange(senders);
-        this.senders.Sort((a, b) => a.GetMonthLimit().CompareTo(b.GetMonthLimit()));
+        this.services = new List<EmailService>(services.Length + 1) { service };
+        this.services.AddRange(services);
     }
 
-    public async Task<Exception?> Send(string from, string to, string subject, string html)
+    public async Task<Exception?> SendOne(string from, string to, string subject, string html)
     {
         try
         {
-            for (int i = 0; i < senders.Count; ++i)
+            for (int i = 0; i < services.Count; ++i)
             {
-                var sender = senders[i];
-                if (sender.IsLimitAllow())
+                var service = services[i];
+
+                if (service.Limiters.All(l => l.IsLimitAllow()))
                 {
-                    await sender.SendEmail(from, to, subject, html);
-                    return null;
+                    var error = await service.Sender.SendOne(from, to, subject, html);
+
+                    if (error == null)
+                    {
+                        foreach (var limiter in service.Limiters) limiter.IncrementLimiter();
+                        return null;
+                    }
+                    return error;
                 }
             }
             return new LimitReachedException();

@@ -1,68 +1,39 @@
 ﻿using System.Text;
+using System.Net.Http.Headers;
 
 namespace Unator.Email.Senders;
 
 public class Mailjet : UEmailSender
 {
-    private const string url = "https://api.mailjet.com/v3/send";
-    private string credentials;
+    private const string url = "https://api.mailjet.com/v3.1/send";
+    private readonly HttpClient httpClient;
 
-    private readonly long monthLimit;
-    private readonly long dayLimit;
-
-    public Mailjet(string key, string secret, long monthLimit, int dayLimit)
+    public Mailjet(string key, string secret)
     {
-        credentials = Convert.ToBase64String(Encoding.ASCII.GetBytes($"{key}:{secret}"));
-        this.monthLimit = monthLimit;
-        this.dayLimit = dayLimit;
+        var credentials = Convert.ToBase64String(Encoding.ASCII.GetBytes($"{key}:{secret}"));
+        httpClient = UEmailSender.JsonHttpClient(headers =>
+        {
+            headers.Authorization = new AuthenticationHeaderValue("Basic", credentials);
+        });
     }
 
-    public long GetMonthLimit() => monthLimit;
-
-    public bool IsLimitAllow()
-    {
-        throw new NotImplementedException();
-    }
-
-    public async Task<Exception?> SendEmail(string from, string to, string subject, string html)
+    public async Task<Exception?> SendOne(string from, string to, string subject, string html)
     {
         try
         {
-            using HttpClient client = new();
+            string jsonBody = @$"{{""Messages"":[{{""From"":{{""Email"":""{from}""}},""HTMLPart"":""{html}"",""Subject"":""{subject}"",""TextPart"":""{html}"",""To"":[{{""Email"":""{to}""}}]}}]}}";
 
-            string jsonBody = $@"
-            {{
-                ""FromEmail"": ""{from}"",
-                ""Recipients"": [
-                    {{
-                        ""Email"": ""{to}""
-                    }}
-                ],
-                ""Subject"": ""{subject}"",
-                ""Html-part"": ""{html}""
-            }}";
+            HttpResponseMessage response = await UEmailSender.JsonPost(httpClient, url, jsonBody);
 
-            client.DefaultRequestHeaders.Add("Authorization", $"Basic {credentials}");
-
-            HttpResponseMessage response = await client.PostAsync(url, new StringContent(jsonBody, Encoding.UTF8, "application/json"));
+            string responseBody = await response.Content.ReadAsStringAsync();
+            Console.WriteLine(responseBody);
 
             if (response.IsSuccessStatusCode)
             {
-                string responseBody = await response.Content.ReadAsStringAsync();
-                Console.WriteLine(responseBody);
-
-                Interlocked.Increment(ref monthUsed);
-                Interlocked.Increment(ref dayUsed);
-            }
-            else
-            {
-                return new SenderServerFailException();
-                // process different errors
-
-                Console.WriteLine("failed");
+                return null;
             }
 
-            return null;
+            return new SenderServerFailException();
         }
         catch (Exception ex)
         {

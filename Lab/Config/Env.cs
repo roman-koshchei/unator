@@ -21,5 +21,5 @@ public static class Env
         }
     }
 
-    public static string Get(string key) => Environment.GetEnvironmentVariable(key)!;
+    public static string Get(string key) => Environment.GetEnvironmentVariable(key)!.Trim();
 }

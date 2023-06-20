@@ -12,7 +12,7 @@ public class Mailchimp : UEmailSender
         throw new NotImplementedException();
     }
 
-    public Task<Exception?> SendEmail(string from, string to, string subject, string html)
+    public Task<Exception?> SendOne(string from, string to, string subject, string html)
     {
         throw new NotImplementedException();
     }

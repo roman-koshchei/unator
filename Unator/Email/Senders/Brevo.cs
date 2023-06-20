@@ -8,33 +8,20 @@ namespace Unator.Email.Senders;
 public class Brevo : UEmailSender
 {
     private const string url = "https://api.brevo.com/v3/smtp/email";
-    private readonly string token;
+    private readonly HttpClient httpClient;
 
-    private readonly int dayLimit;
-    private int dayUsed = 0;
-
-    public Brevo(string token, int dayLimit)
+    public Brevo(string token)
     {
-        this.token = token;
-        this.dayLimit = dayLimit;
+        httpClient = UEmailSender.JsonHttpClient(headers =>
+        {
+            headers.Add("api-key", token);
+        });
     }
 
-    public long GetMonthLimit() => dayLimit * 30;
-
-    public bool IsLimitAllow()
-    {
-        // day limit reset
-        if (DateTime.Now.TimeOfDay == TimeSpan.Zero) Interlocked.Exchange(ref dayUsed, 0);
-
-        return dayUsed < dayLimit;
-    }
-
-    public async Task<Exception?> SendEmail(string from, string to, string subject, string html)
+    public async Task<Exception?> SendOne(string from, string to, string subject, string html)
     {
         try
         {
-            using HttpClient client = new();
-
             string jsonBody = $@"
             {{
                 ""sender"": {{
@@ -49,26 +36,18 @@ public class Brevo : UEmailSender
                 ""htmlContent"":""{html}""
             }}";
 
-            client.DefaultRequestHeaders.Add("Accept", "application/json");
-            client.DefaultRequestHeaders.Add("api-key", token);
+            HttpResponseMessage response = await UEmailSender.JsonPost(httpClient, url, jsonBody);
 
-            HttpResponseMessage response = await client.PostAsync(url, new StringContent(jsonBody, Encoding.UTF8, "application/json"));
+            string responseBody = await response.Content.ReadAsStringAsync();
+            Console.WriteLine(responseBody);
 
             if (response.IsSuccessStatusCode)
             {
-                string responseBody = await response.Content.ReadAsStringAsync();
-                Console.WriteLine(responseBody);
-
-                Interlocked.Increment(ref dayUsed);
+                return null;
             }
-            else
-            {
-                // process different errors
-                Console.WriteLine("failed");
-                return new Exception(response.StatusCode.ToString());
-            }
-
-            return null;
+            // process different errors
+            Console.WriteLine("failed");
+            return new Exception(response.StatusCode.ToString());
         }
         catch (Exception ex)
         {

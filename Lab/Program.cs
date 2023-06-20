@@ -18,6 +18,8 @@ Env.LoadFromFile(dotenv);
 
 Secrets.BrevoApiKey = Env.Get("BREVO_API_KEY");
 Secrets.ResendApiKey = Env.Get("RESEND_API_KEY");
+Secrets.MailjetApiKey = Env.Get("MAILJET_API_KEY");
+Secrets.MailjetSecret = Env.Get("MAILJET_SECRET_KEY");
 
 await Email.Start();
 
