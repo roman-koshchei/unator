@@ -1,6 +1,4 @@
-﻿using System.Text;
-
-namespace Unator.Email.Senders;
+﻿namespace Unator.Email.Senders;
 
 public class Resend : UEmailSender
 {

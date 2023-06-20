@@ -1,6 +1,4 @@
-﻿using System.Text;
-
-namespace Unator.Email.Senders;
+﻿namespace Unator.Email.Senders;
 
 /// <summary>
 /// Brevo email sender. At the current moment Brevo doesn't have month limit.

@@ -1,11 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using static System.Net.Mime.MediaTypeNames;
-
-namespace Unator.Chain;
+﻿namespace Unator.Chain;
 
 /// <summary>
 /// Instead of calling the next chain item inside of the current,

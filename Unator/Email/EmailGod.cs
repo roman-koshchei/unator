@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace Unator.Email;
+﻿namespace Unator.Email;
 
 /// <summary>
 /// Allow to send maximum amount of emails.
