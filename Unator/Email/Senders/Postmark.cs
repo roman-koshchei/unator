@@ -1,18 +1,22 @@
-﻿using System.Net.Http;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
 using System.Net.Http.Headers;
+using System.Text;
+using System.Threading.Tasks;
 
 namespace Unator.Email.Senders;
 
-public class SendGrid : UEmailSender
+public class Postmark : UEmailSender
 {
-    private const string url = "https://api.sendgrid.com/v3/mail/send";
+    private const string url = "https://api.postmarkapp.com/email";
     private readonly HttpClient httpClient;
 
-    public SendGrid(string key)
+    public Postmark(string key)
     {
         httpClient = UEmailSender.JsonHttpClient(headers =>
         {
-            headers.Authorization = new AuthenticationHeaderValue("Bearer", key);
+            headers.Add("X-Postmark-Server-Token", key);
         });
     }
 
@@ -20,7 +24,7 @@ public class SendGrid : UEmailSender
     {
         try
         {
-            string jsonBody = @$"{{""personalizations"":[{{""to"":[{{""email"":""{to}"",""name"":""{to}""}}],""subject"":""{subject}""}}],""content"": [{{""type"": ""text/plain"", ""value"": ""{html}""}}],""from"":{{""email"":""{from}"",""name"":""{from}""}},""reply_to"":{{""email"":""{from}"",""name"":""{from}""}}}}";
+            string jsonBody = $@"{{""From"": ""{from}"",""To"": ""{to}"",""Subject"": ""{subject}"",""HtmlBody"": ""{html}"",""MessageStream"": ""outbound""}}";
 
             var response = await UEmailSender.JsonPost(httpClient, url, jsonBody);
 
