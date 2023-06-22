@@ -88,6 +88,15 @@ Links:
 
 ---
 
+### Inboxroad
+
+Links:
+
+- service: [inboxroad.com](https://inboxroad.com/)
+- docs: [inboxroad.com/documentation/api-reference/web-api](https://inboxroad.com/documentation/api-reference/web-api/)
+
+---
+
 ### Mailtrap
 
 Links:
