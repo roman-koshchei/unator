@@ -3,6 +3,7 @@ using System.Net.Http.Headers;
 
 namespace Unator.Email.Senders;
 
+/*
 public class SendGrid : UEmailSender
 {
     private const string url = "https://api.sendgrid.com/v3/mail/send";
@@ -40,3 +41,4 @@ public class SendGrid : UEmailSender
         }
     }
 }
+*/

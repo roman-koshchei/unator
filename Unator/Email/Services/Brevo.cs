@@ -1,4 +1,6 @@
-﻿namespace Unator.Email.Senders;
+﻿using System.Linq;
+
+namespace Unator.Email.Senders;
 
 /// <summary>
 /// Brevo email sender. At the current moment Brevo doesn't have month limit.
@@ -16,20 +18,16 @@ public class Brevo : UEmailSender
         });
     }
 
-    public async Task<Exception?> SendOne(string from, string to, string subject, string html)
+    public async Task<EmailStatus> Send(string fromEmail, string fromName, List<string> to, string subject, string text, string html)
     {
         try
         {
             string jsonBody = $@"
             {{
                 ""sender"": {{
-                    ""email"":""{from}""
+                    ""email"":""{fromEmail}""
                 }},
-                ""to"":[
-                    {{
-                        ""email"":""{to}""
-                    }}
-                ],
+                ""to"":[{string.Join(",", to.Select(x => $@"{{""email"":""{x}""}}"))}],
                 ""subject"":""{subject}"",
                 ""htmlContent"":""{html}""
             }}";
@@ -39,17 +37,12 @@ public class Brevo : UEmailSender
             string responseBody = await response.Content.ReadAsStringAsync();
             Console.WriteLine(responseBody);
 
-            if (response.IsSuccessStatusCode)
-            {
-                return null;
-            }
-            // process different errors
-            Console.WriteLine("failed");
-            return new Exception(response.StatusCode.ToString());
+            if (response.IsSuccessStatusCode) return EmailStatus.Success;
+            return EmailStatus.Failed;
         }
-        catch (Exception ex)
+        catch
         {
-            return ex;
+            return EmailStatus.Failed;
         }
     }
 }

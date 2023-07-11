@@ -7,6 +7,10 @@ using System.Threading.Tasks;
 
 namespace Unator.Email.Senders;
 
+/// <summary>
+/// Not complete
+/// </summary>
+/*
 public class Postmark : UEmailSender
 {
     private const string url = "https://api.postmarkapp.com/email";
@@ -20,27 +24,25 @@ public class Postmark : UEmailSender
         });
     }
 
-    public async Task<Exception?> SendOne(string from, string to, string subject, string html)
+    public async Task<EmailStatus> SendOne(string fromEmail, string fromName, List<string> to, string subject, string text, string html)
     {
         try
         {
-            string jsonBody = $@"{{""From"": ""{from}"",""To"": ""{to}"",""Subject"": ""{subject}"",""HtmlBody"": ""{html}"",""MessageStream"": ""outbound""}}";
+            string jsonBody = $@"{{""From"": ""{fromEmail}"",""To"": ""{to}"",""Subject"": ""{subject}"",""HtmlBody"": ""{html}"",""MessageStream"": ""outbound""}}";
 
             var response = await UEmailSender.JsonPost(httpClient, url, jsonBody);
 
             string responseBody = await response.Content.ReadAsStringAsync();
             Console.WriteLine(responseBody);
 
-            if (response.IsSuccessStatusCode)
-            {
-                return null;
-            }
+            if (response.IsSuccessStatusCode) return EmailStatus.Success;
 
-            return new SenderServerFailException();
+            return EmailStatus.Failed;
         }
-        catch (Exception ex)
+        catch
         {
-            return ex;
+            return EmailStatus.Failed;
         }
     }
 }
+*/

@@ -1,4 +1,6 @@
-﻿namespace Unator.Email;
+﻿using System.Collections.Immutable;
+
+namespace Unator.Email;
 
 /// <summary>
 /// Allow to send maximum amount of emails.
@@ -7,7 +9,7 @@
 /// </summary>
 public class EmailGod : UEmailSender
 {
-    private readonly List<EmailService> services;
+    private readonly IImmutableList<EmailService> services;
 
     /// <summary>
     /// Require at least 1 sender.
@@ -16,35 +18,40 @@ public class EmailGod : UEmailSender
     /// <param name="services">All other senders</param>
     public EmailGod(EmailService service, params EmailService[] services)
     {
-        this.services = new List<EmailService>(services.Length + 1) { service };
-        this.services.AddRange(services);
+        var list = new List<EmailService>(services.Length + 1) { service };
+        list.AddRange(services);
+        this.services = list.ToImmutableList();
     }
 
-    public async Task<Exception?> SendOne(string from, string to, string subject, string html)
+    public async Task<EmailStatus> Send(string fromEmail, string fromName, List<string> to, string subject, string text, string html)
     {
         try
         {
+            bool allLimitsReached = true;
+
             for (int i = 0; i < services.Count; ++i)
             {
                 var service = services[i];
 
                 if (service.Limiters.All(l => l.IsLimitAllow()))
                 {
-                    var error = await service.Sender.SendOne(from, to, subject, html);
+                    var status = await service.Sender.Send(fromEmail, fromName, to, subject, text, html);
 
-                    if (error == null)
+                    if (status == EmailStatus.Success)
                     {
                         foreach (var limiter in service.Limiters) limiter.IncrementLimiter();
-                        return null;
+                        return EmailStatus.Success;
                     }
-                    return error;
+
+                    if (status == EmailStatus.Failed) allLimitsReached = false;
                 }
             }
-            return new LimitReachedException();
+
+            return allLimitsReached ? EmailStatus.LimitReached : EmailStatus.Failed;
         }
-        catch (Exception ex)
+        catch
         {
-            return ex;
+            return EmailStatus.Failed;
         }
     }
 }

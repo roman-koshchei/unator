@@ -1,4 +1,6 @@
-﻿namespace Unator.Email.Senders;
+﻿using System.Net;
+
+namespace Unator.Email.Senders;
 
 public class Resend : UEmailSender
 {
@@ -14,32 +16,38 @@ public class Resend : UEmailSender
         });
     }
 
-    public async Task<Exception?> SendOne(string from, string to, string subject, string html)
+    public async Task<EmailStatus> Send(string fromEmail, string fromName, List<string> to, string subject, string text, string html)
     {
         try
         {
             string jsonBody = $@"
             {{
-                ""from"": ""{from}"",
-                ""to"": ""{to}"",
+                ""from"": ""{fromName} <{fromEmail}>"",
+                ""to"": [{string.Join(",", to.Select(x => $@"""{x}"""))}],
                 ""subject"": ""{subject}"",
+                ""text"":""{text}"",
                 ""html"": ""{html}""
             }}";
 
             HttpResponseMessage response = await UEmailSender.JsonPost(httpClient, url, jsonBody);
 
+            string responseBody = await response.Content.ReadAsStringAsync();
+            Console.WriteLine(responseBody);
+
             if (response.IsSuccessStatusCode)
             {
-                string responseBody = await response.Content.ReadAsStringAsync();
-                Console.WriteLine(responseBody);
-                return null;
+                // during testing
+
+                return EmailStatus.Success;
             }
 
-            return new SenderServerFailException();
+            if (response.StatusCode == HttpStatusCode.TooManyRequests) return EmailStatus.LimitReached;
+
+            return EmailStatus.Failed;
         }
-        catch (Exception ex)
+        catch
         {
-            return ex;
+            return EmailStatus.Failed;
         }
     }
 }
