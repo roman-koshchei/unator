@@ -12,7 +12,7 @@ public class Brevo : UEmailSender
 
     public Brevo(string token)
     {
-        httpClient = UEmailSender.JsonHttpClient(headers =>
+        httpClient = Http.JsonClient(headers =>
         {
             headers.Add("api-key", token);
         });

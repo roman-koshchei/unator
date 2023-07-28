@@ -35,7 +35,7 @@ public static class Email
     public static async Task Start()
     {
         var god = new EmailGod(
-            new EmailService(new Postmark(Secrets.PostmarkApiKey), new DayLimiter(1)),
+            //new EmailService(new Postmark(Secrets.PostmarkApiKey), new DayLimiter(1)),
             new EmailService(new Resend(Secrets.ResendApiKey), new DayLimiter(1), new MonthLimiter(new DateTime(2023, 6, 19), 1)),
             new EmailService(new Brevo(Secrets.BrevoApiKey), new DayLimiter(1)),
             new EmailService(new Mailjet(Secrets.MailjetApiKey, Secrets.MailjetSecret), new DayLimiter(1), new MonthLimiter(new DateTime(2023, 6, 19), 6000))
@@ -44,7 +44,14 @@ public static class Email
         //god.Add(new SendGrid());
         //god.Add(new Mailchimp());
 
-        var error = await god.SendOne("roman@paragoda.tech", "roman@paragoda.tech", "Testing Email God 1", "<strong>It works!</strong>");
+        var error = await god.Send(
+            fromEmail: "roman@paragoda.tech",
+            fromName: "Roman",
+            to: new List<string> { "romankoshchei@gmail.com" },
+            subject: "Testing Email God 1",
+            text: "It works",
+            html: "<strong>It works!</strong>"
+        );
 
         //if (error != null)
         //{

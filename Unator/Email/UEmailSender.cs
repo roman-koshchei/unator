@@ -42,6 +42,17 @@ public interface UEmailSender
     {
         return await client.PostAsync(url, new StringContent(body, Encoding.UTF8, "application/json"));
     }
+
+    protected static string Compact(string source)
+    {
+        var builder = new StringBuilder(source.Length);
+        for (int i = 0; i < source.Length; i++)
+        {
+            char c = source[i];
+            if (!char.IsWhiteSpace(c)) builder.Append(c);
+        }
+        return source.Length == builder.Length ? source : builder.ToString();
+    }
 }
 
 public class EmailService
