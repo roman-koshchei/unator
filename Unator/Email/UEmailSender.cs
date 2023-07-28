@@ -27,32 +27,6 @@ public interface UEmailSender
     /// <param name="html">Html content.</param>
     /// <returns>null if email is sended successfully and Exception if not.</returns>
     public Task<EmailStatus> Send(string fromEmail, string fromName, List<string> to, string subject, string text, string html);
-
-    protected static HttpClient JsonHttpClient(Action<HttpRequestHeaders> setHeaders)
-    {
-        HttpClient client = new();
-
-        client.DefaultRequestHeaders.Add("Accept", "application/json");
-        setHeaders(client.DefaultRequestHeaders);
-
-        return client;
-    }
-
-    protected static async Task<HttpResponseMessage> JsonPost(HttpClient client, string url, string body)
-    {
-        return await client.PostAsync(url, new StringContent(body, Encoding.UTF8, "application/json"));
-    }
-
-    protected static string Compact(string source)
-    {
-        var builder = new StringBuilder(source.Length);
-        for (int i = 0; i < source.Length; i++)
-        {
-            char c = source[i];
-            if (!char.IsWhiteSpace(c)) builder.Append(c);
-        }
-        return source.Length == builder.Length ? source : builder.ToString();
-    }
 }
 
 public class EmailService

@@ -1,9 +1,9 @@
 ﻿using System.Linq;
 
-namespace Unator.Email.Senders;
+namespace Unator.Email.Services;
 
 /// <summary>
-/// Brevo email sender. At the current moment Brevo doesn't have month limit.
+/// Send emails with Brevo service: <see href="https://www.brevo.com">brevo.com</see>
 /// </summary>
 public class Brevo : UEmailSender
 {
@@ -12,37 +12,24 @@ public class Brevo : UEmailSender
 
     public Brevo(string token)
     {
-        httpClient = Http.JsonClient(headers =>
-        {
-            headers.Add("api-key", token);
-        });
+        httpClient = Http.JsonClient(headers => headers.Add("api-key", token));
     }
 
     public async Task<EmailStatus> Send(string fromEmail, string fromName, List<string> to, string subject, string text, string html)
     {
-        try
-        {
-            string jsonBody = $@"
-            {{
-                ""sender"": {{
-                    ""email"":""{fromEmail}""
-                }},
-                ""to"":[{string.Join(",", to.Select(x => $@"{{""email"":""{x}""}}"))}],
-                ""subject"":""{subject}"",
-                ""htmlContent"":""{html}""
-            }}";
+        string jsonBody = $@"
+        {{
+            ""sender"":{{""name"":""{fromName}"",""email"":""{fromEmail}""}},
+            ""to"":[{string.Join(",", to.Select(x => $@"{{""email"":""{x}""}}"))}],
+            ""subject"":""{subject}"",
+            ""htmlContent"":""{html}"",
+            ""textContent"":""{text}""
+        }}".Compact();
 
-            HttpResponseMessage response = await UEmailSender.JsonPost(httpClient, url, jsonBody);
+        var response = await Http.JsonPost(httpClient, url, jsonBody);
+        if (response == null) return EmailStatus.Failed;
 
-            string responseBody = await response.Content.ReadAsStringAsync();
-            Console.WriteLine(responseBody);
-
-            if (response.IsSuccessStatusCode) return EmailStatus.Success;
-            return EmailStatus.Failed;
-        }
-        catch
-        {
-            return EmailStatus.Failed;
-        }
+        if (response.IsSuccessStatusCode) return EmailStatus.Success;
+        return EmailStatus.Failed;
     }
 }

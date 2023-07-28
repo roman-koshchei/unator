@@ -1,7 +1,10 @@
 ﻿using System.Net;
 
-namespace Unator.Email.Senders;
+namespace Unator.Email.Services;
 
+/// <summary>
+/// Send emails with Resend service: <see href="https://resend.com">resend.com</see>
+/// </summary>
 public class Resend : UEmailSender
 {
     private const string url = "https://api.resend.com/emails";
@@ -10,44 +13,31 @@ public class Resend : UEmailSender
 
     public Resend(string token)
     {
-        httpClient = UEmailSender.JsonHttpClient(headers =>
+        httpClient = Http.JsonClient(headers =>
         {
             headers.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", token);
         });
     }
 
-    public async Task<EmailStatus> Send(string fromEmail, string fromName, List<string> to, string subject, string text, string html)
+    public async Task<EmailStatus> Send(string fromEmail, string fromName, List<string> toEmails, string subject, string text, string html)
     {
-        try
-        {
-            string jsonBody = $@"
-            {{
-                ""from"": ""{fromName} <{fromEmail}>"",
-                ""to"": [{string.Join(",", to.Select(x => $@"""{x}"""))}],
-                ""subject"": ""{subject}"",
-                ""text"":""{text}"",
-                ""html"": ""{html}""
-            }}";
+        string jsonBody = $@"
+        {{
+            ""from"":""{fromName} <{fromEmail}>"",
+            ""to"":[{string.Join(",", toEmails.Select(x => $@"""{x}"""))}],
+            ""subject"":""{subject}"",
+            ""text"":""{text}"",
+            ""html"":""{html}""
+        }}".Compact();
 
-            HttpResponseMessage response = await UEmailSender.JsonPost(httpClient, url, jsonBody);
+        var response = await Http.JsonPost(httpClient, url, jsonBody);
 
-            string responseBody = await response.Content.ReadAsStringAsync();
-            Console.WriteLine(responseBody);
+        if (response == null) return EmailStatus.Failed;
 
-            if (response.IsSuccessStatusCode)
-            {
-                // during testing
+        if (response.IsSuccessStatusCode) return EmailStatus.Success;
 
-                return EmailStatus.Success;
-            }
+        if (response.StatusCode == HttpStatusCode.TooManyRequests) return EmailStatus.LimitReached;
 
-            if (response.StatusCode == HttpStatusCode.TooManyRequests) return EmailStatus.LimitReached;
-
-            return EmailStatus.Failed;
-        }
-        catch
-        {
-            return EmailStatus.Failed;
-        }
+        return EmailStatus.Failed;
     }
 }
