@@ -1,6 +1,4 @@
-﻿using Microsoft.EntityFrameworkCore.Storage.ValueConversion.Internal;
-
-namespace Lab.Config;
+﻿namespace Lab.Config;
 
 public static class Secrets
 {

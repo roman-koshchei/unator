@@ -8,6 +8,7 @@ My goal is to provide a set of functions/classes to make development transparent
 1. [Database](#database--entity-framework-core)
 2. [Environment variables](#environment-variables)
 3. [Emails](#emails)
+4. [Storage](#storage)
 
 ## Database / Entity Framework Core
 
@@ -100,3 +101,30 @@ if(emailStatus == EmailStatus.Success) {
 
 We may change it in future if more functionality will be required. For example, move email
 information to seperate class/struct to persist it. But it's good for now.
+
+## Storage
+
+Almost all applications nowadays require storage to store images.
+I got you. The goal is almost same as EmailGod's goal. We generalize storages to
+`IStorage` interface, that allow us to upload and delete files. You will need to store
+bucket, key and provider. Because `StorageGod` rely on them to detect how to delete image
+from storage.
+
+Services:
+
+- Storj
+
+```csharp
+var storageGod = new StorageGod(
+  new Storj(accessKey, secretKey, endpoint, publicKey, bucket)
+);
+
+var key = $"{Guid.New().ToString()}{fileExtension}";
+var storageFile = await storageGod.Upload(key, fileStream);
+if(storageFile == null) return;
+
+var deleted = await storageGod.Delete(storageFile);
+if(deleted) Console.WriteLine("File deleted");
+```
+
+StorageGod is new thing, so not many services are connected.

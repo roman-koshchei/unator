@@ -1,16 +1,10 @@
-﻿using System.Text;
-using Unator;
-
-/*
+﻿/*
 
     Lab = laboratory
     Test all different things
     See how they work
 
 */
-
-
-
 
 /*
 var root = Directory.GetCurrentDirectory();

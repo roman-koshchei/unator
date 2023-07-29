@@ -1,6 +1,4 @@
-﻿using System.Linq;
-
-namespace Unator.Email.Services;
+﻿namespace Unator.Email.Services;
 
 /// <summary>
 /// Send emails with Brevo service: <see href="https://www.brevo.com">brevo.com</see>
