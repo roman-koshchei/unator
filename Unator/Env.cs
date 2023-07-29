@@ -25,7 +25,9 @@ public static class Env
     }
 
     /// <summary>
-    /// Get environment variable with !, so it will throw if variable isn't found.
+    /// Get environment variable. It will throw exception if variable isn't found.
     /// </summary>
-    public static string Get(string key) => Environment.GetEnvironmentVariable(key)!;
+    public static string Get(string key)
+        => Environment.GetEnvironmentVariable(key)
+        ?? throw new KeyNotFoundException($"Environment variable: {key} wasn't found!");
 }
