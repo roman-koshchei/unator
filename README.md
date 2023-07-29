@@ -6,6 +6,8 @@ Breaking mistaken standards of enterprise such as Repository pattern.
 My goal is to provide a set of functions/classes to make development transparent and logical.
 
 1. [Database](#database--entity-framework-core)
+2. [Environment variables](#environment-variables)
+3. [Emails](#emails)
 
 ## Database / Entity Framework Core
 
@@ -54,3 +56,47 @@ var secret = Env.Get("SECRET");
 `Env.LoadFile` will set environment variables if file exists.
 
 `Env.Get` get environment variable, but throw if one isn't found. It's rare time when I decided to use throw. I think environment variables should be loaded at the start of program. If variable isn't found then we can't start program.
+
+## Emails
+
+That's where things go interesting. I provide `EmailGod` class, which will manage several email services. You get benefits:
+
+- higher chance of delivering email: 1 service fails, use another one.
+- more free plan resources.
+
+At the current moment Unator supports sending emails from:
+
+- Resend <- the best one
+- Mailjet
+- SendGrid
+- Brevo
+
+`EmailGod` implements same interface as email senders. I highly recommend using at least 2 services to be unstoppable.
+
+Code looks:
+
+```csharp
+var resendApiKey = Env.Get("RESEND_API_KEY");
+var brevoApiKey = Env.Get("BREVO_API_KEY");
+
+var emailGod = new EmailGod(
+  new EmailService(new Resend(resendApiKey), new DayLimiter(100)),
+  new EmailService(new Brevo(brevoApiKey), new DayLimiter(300)),
+);
+
+var emailStatus = await emailGod.Send(
+  fromEmail: "example@mail.com",
+  fromName: "example",
+  toEmails: new List<string>() { "me@mail.com" },
+  subject: "Showing EmailGod",
+  text: $"It's beautiful",
+  html: $"<a href='https://github.com/roman-koshchei/unator'>GitHub</a>"
+);
+
+if(emailStatus == EmailStatus.Success) {
+  Console.WriteLine("Success");
+}
+```
+
+We may change it in future if more functionality will be required. For example, move email
+information to seperate class/struct to persist it. But it's good for now.
