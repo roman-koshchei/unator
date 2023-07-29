@@ -2,7 +2,8 @@
 
 namespace Unator;
 
-public class Preruntime
+/// <summary>Helper to make preruntime static initialization.</summary>
+public static class Preruntime
 {
     /// <summary>Run static initialization of all classes marked with [Preruntime].</summary>
     /// <returns>Null if success otherwise Exception.</returns>
@@ -24,20 +25,10 @@ public class Preruntime
             return ex;
         }
     }
-
-    public static Func<string> Make(string query)
-    {
-        var result = query.ToLower();
-        return () =>
-        {
-            Console.WriteLine(result);
-            return result;
-        };
-    }
 }
 
 /// <summary>Mark class for Preruntime static initialization.</summary>
-[AttributeUsage(AttributeTargets.Class, AllowMultiple = false)]
+[AttributeUsage(AttributeTargets.Class)]
 public class PreruntimeAttribute : Attribute
 {
 }

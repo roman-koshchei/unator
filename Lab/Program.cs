@@ -1,12 +1,5 @@
-﻿using Lab;
-using Lab.Config;
-using Microsoft.Extensions.Logging;
-using System.Net;
-using System.Reflection;
-using System.Text;
+﻿using System.Text;
 using Unator;
-using Unator.Http;
-using static System.Net.Mime.MediaTypeNames;
 
 /*
 
@@ -26,40 +19,6 @@ Console.WriteLine(Repo.Query());
 public static class Repo
 {
     public static readonly Func<string> Query = Preruntime.Make("SELECT * FROM me");
-}
-
-public static class CompactExtension
-{
-    /// <summary>
-    /// Remove all white spaces from string.
-    /// Mostly used with JSON string.
-    /// </summary>
-    public static string Compact(this string source)
-    {
-        var builder = new StringBuilder(source.Length);
-        bool previousWhitespace = false;
-
-        for (int i = 0; i < source.Length; ++i)
-        {
-            char c = source[i];
-
-            if (char.IsWhiteSpace(c))
-            {
-                previousWhitespace = true;
-                continue;
-            }
-
-            if (previousWhitespace)
-            {
-                builder.Append(' ');
-                previousWhitespace = false;
-            }
-
-            builder.Append(c);
-        }
-
-        return builder.ToString();
-    }
 }
 
 /*
