@@ -7,7 +7,7 @@ namespace Unator.Email.Services;
 /// <summary>
 /// Send emails with SendGrid service: <see href="https://sendgrid.com/">sendgrid.com</see>
 /// </summary>
-public class SendGrid : UEmailSender
+public class SendGrid : IEmailSender
 {
     private const string url = "https://api.sendgrid.com/v3/mail/send";
     private readonly HttpClient httpClient;

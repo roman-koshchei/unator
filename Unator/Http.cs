@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net;
 using System.Net.Http.Headers;
 using System.Text;
 using System.Text.Json;
@@ -62,6 +63,13 @@ public static class Http
     public static bool IsSuccessful(int statusCode)
     {
         return (statusCode >= 200) && (statusCode <= 299);
+    }
+
+    /// <summary>Check if status code is successful.</summary>
+    /// <returns>True if success, false if not.</returns>
+    public static bool IsSuccessful(HttpStatusCode statusCode)
+    {
+        return ((int)statusCode >= 200) && ((int)statusCode <= 299);
     }
 }
 

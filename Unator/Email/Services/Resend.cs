@@ -5,7 +5,7 @@ namespace Unator.Email.Services;
 /// <summary>
 /// Send emails with Resend service: <see href="https://resend.com">resend.com</see>
 /// </summary>
-public class Resend : UEmailSender
+public class Resend : IEmailSender
 {
     private const string url = "https://api.resend.com/emails";
 

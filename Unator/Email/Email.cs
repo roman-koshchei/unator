@@ -1,21 +1,48 @@
-﻿using System.Collections.Immutable;
+﻿using System;
+using System.Collections.Generic;
+using System.Collections.Immutable;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
 
 namespace Unator.Email;
 
-/// <summary>
-/// Allow to send maximum amount of emails.
-/// Add as much as possible of email sending services.
-/// And then get as much emails as possible for lowest price
-/// </summary>
-public class EmailGod : UEmailSender
+public enum EmailStatus
+{
+    Success,
+    LimitReached, // confusing, becasue don't know which limit
+    Failed
+}
+
+/// <summary>Care only about sending email. Limits are controlled by ILimiter.</summary>
+public interface IEmailSender
+{
+    /// <param name="fromEmail">Email adress from what you send.</param>
+    /// <param name="fromName">Name of a sender.</param>
+    /// <param name="to">List of email adresses of destination.</param>
+    /// <param name="subject">Subject of email.</param>
+    /// <param name="text">Text content.</param>
+    /// <param name="html">Html content.</param>
+    public Task<EmailStatus> Send(string fromEmail, string fromName, List<string> to, string subject, string text, string html);
+}
+
+public class EmailService
+{
+    public IEmailSender Sender { get; }
+    public ILimiter[] Limiters { get; }
+
+    public EmailService(IEmailSender sender, params ILimiter[] limiters)
+    {
+        Sender = sender;
+        Limiters = limiters;
+    }
+}
+
+/// <summary>Manage several email senders.</summary>
+public class EmailGod : IEmailSender
 {
     private readonly IImmutableList<EmailService> services;
 
-    /// <summary>
-    /// Require at least 1 sender.
-    /// </summary>
-    /// <param name="service">Required sender</param>
-    /// <param name="services">All other senders</param>
     public EmailGod(EmailService service, params EmailService[] services)
     {
         var list = new List<EmailService>(services.Length + 1) { service };

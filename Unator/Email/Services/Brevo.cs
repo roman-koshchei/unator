@@ -5,7 +5,7 @@ namespace Unator.Email.Services;
 /// <summary>
 /// Send emails with Brevo service: <see href="https://www.brevo.com">brevo.com</see>
 /// </summary>
-public class Brevo : UEmailSender
+public class Brevo : IEmailSender
 {
     private const string url = "https://api.brevo.com/v3/smtp/email";
     private readonly HttpClient httpClient;

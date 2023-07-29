@@ -3,7 +3,7 @@ using System.Text;
 
 namespace Unator.Email.Services;
 
-public class Mailjet : UEmailSender
+public class Mailjet : IEmailSender
 {
     private const string url = "https://api.mailjet.com/v3.1/send";
     private readonly HttpClient httpClient;
