@@ -9,17 +9,8 @@ using Unator;
 
 */
 
-var error = Preruntime.Run();
-if (error != null) throw error;
 
-Console.WriteLine("tscrt");
-Console.WriteLine(Repo.Query());
 
-[Preruntime]
-public static class Repo
-{
-    public static readonly Func<string> Query = Preruntime.Make("SELECT * FROM me");
-}
 
 /*
 var root = Directory.GetCurrentDirectory();
