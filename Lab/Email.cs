@@ -5,7 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Unator.Email;
-using Unator.Email.Senders;
+using Unator.Email.Services;
 
 namespace Lab;
 
@@ -28,48 +28,48 @@ namespace Lab;
 /// </summary>
 public static class Email
 {
-    /// <summary>
-    /// Start experiments with email sending.
-    /// </summary>
-    /// <returns></returns>
-    public static async Task Start()
-    {
-        var god = new EmailGod(
-            //new EmailService(new Postmark(Secrets.PostmarkApiKey), new DayLimiter(1)),
-            new EmailService(new Resend(Secrets.ResendApiKey), new DayLimiter(1), new MonthLimiter(new DateTime(2023, 6, 19), 1)),
-            new EmailService(new Brevo(Secrets.BrevoApiKey), new DayLimiter(1)),
-            new EmailService(new Mailjet(Secrets.MailjetApiKey, Secrets.MailjetSecret), new DayLimiter(1), new MonthLimiter(new DateTime(2023, 6, 19), 6000))
-        );
+  /// <summary>
+  /// Start experiments with email sending.
+  /// </summary>
+  /// <returns></returns>
+  public static async Task Start()
+  {
+    var god = new EmailGod(
+        //new EmailService(new Postmark(Secrets.PostmarkApiKey), new DayLimiter(1)),
+        new EmailService(new Resend(Secrets.ResendApiKey), new DayLimiter(1), new MonthLimiter(new DateTime(2023, 6, 19), 1)),
+        new EmailService(new Brevo(Secrets.BrevoApiKey), new DayLimiter(1)),
+        new EmailService(new Mailjet(Secrets.MailjetApiKey, Secrets.MailjetSecret), new DayLimiter(1), new MonthLimiter(new DateTime(2023, 6, 19), 6000))
+    );
 
-        //god.Add(new SendGrid());
-        //god.Add(new Mailchimp());
+    //god.Add(new SendGrid());
+    //god.Add(new Mailchimp());
 
-        var error = await god.Send(
-            fromEmail: "roman@paragoda.tech",
-            fromName: "Roman",
-            to: new List<string> { "romankoshchei@gmail.com" },
-            subject: "Testing Email God 1",
-            text: "It works",
-            html: "<strong>It works!</strong>"
-        );
+    var error = await god.Send(
+        fromEmail: "roman@paragoda.tech",
+        fromName: "Roman",
+        to: new List<string> { "romankoshchei@gmail.com" },
+        subject: "Testing Email God 1",
+        text: "It works",
+        html: "<strong>It works!</strong>"
+    );
 
-        //if (error != null)
-        //{
-        //    Console.WriteLine(error.Message.ToString());
-        //}
+    //if (error != null)
+    //{
+    //    Console.WriteLine(error.Message.ToString());
+    //}
 
-        //error = await god.SendOne("roman@paragoda.tech", "romankoshchei@gmail.com", "Testing Email God 2", "<strong>It works!</strong>");
+    //error = await god.SendOne("roman@paragoda.tech", "romankoshchei@gmail.com", "Testing Email God 2", "<strong>It works!</strong>");
 
-        //if (error != null)
-        //{
-        //    Console.WriteLine(error.Message.ToString());
-        //}
+    //if (error != null)
+    //{
+    //    Console.WriteLine(error.Message.ToString());
+    //}
 
-        //error = await god.SendOne("roman@paragoda.tech", "romankoshchei@gmail.com", "Testing Email God 3", "<strong>It works!</strong>");
+    //error = await god.SendOne("roman@paragoda.tech", "romankoshchei@gmail.com", "Testing Email God 3", "<strong>It works!</strong>");
 
-        //if (error != null)
-        //{
-        //    Console.WriteLine(error.Message.ToString());
-        //}
-    }
+    //if (error != null)
+    //{
+    //    Console.WriteLine(error.Message.ToString());
+    //}
+  }
 }
