@@ -51,12 +51,12 @@ var saved = await db.Save();
 
 ```csharp
 Env.LoadFile("/path/to/.env");
-var secret = Env.Get("SECRET");
+var secret = Env.GetRequired("SECRET");
 ```
 
 `Env.LoadFile` will set environment variables if file exists.
 
-`Env.Get` get environment variable, but throw if one isn't found. It's rare time when I decided to use throw. I think environment variables should be loaded at the start of program. If variable isn't found then we can't start program.
+`Env.GetRequired` get environment variable, but throw if one isn't found. It's rare time when I decided to use throw. I think environment variables should be loaded at the start of program. If variable isn't found then we can't start program.
 
 ## Emails
 
