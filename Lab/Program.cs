@@ -6,6 +6,19 @@
 
 */
 
+using Unator;
+
+var result = Maybe.Result(Load, ("beac", "tscri"));
+
+if (result.Data != null)
+{
+}
+
+static string Load((string env, string path) input)
+{
+    throw new NotImplementedException();
+}
+
 /*
 var root = Directory.GetCurrentDirectory();
 var dotenv = Path.Combine(root, ".env");

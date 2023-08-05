@@ -31,13 +31,10 @@ public class Resend : IEmailSender
         }}".Compact();
 
         var response = await Http.JsonPost(httpClient, url, jsonBody);
-
         if (response == null) return EmailStatus.Failed;
 
         if (response.IsSuccessStatusCode) return EmailStatus.Success;
-
         if (response.StatusCode == HttpStatusCode.TooManyRequests) return EmailStatus.LimitReached;
-
         return EmailStatus.Failed;
     }
 }
