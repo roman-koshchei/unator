@@ -2,10 +2,17 @@
 
 namespace Unator;
 
-/// <summary>Helper to make preruntime static initialization.</summary>
+/// <summary>
+/// Make static initialization for classes marked with [Preruntime].
+/// Used if you want to initialize static fields at the start of the program.
+/// Can be useful if you have different functions based on environment you work with,
+/// but don't want to check it on every execution.
+/// </summary>
 public static class Preruntime
 {
-    /// <summary>Run static initialization of all classes marked with [Preruntime].</summary>
+    /// <summary>
+    /// Run static initialization of all classes marked with [Preruntime].
+    /// </summary>
     /// <returns>Null if success otherwise Exception.</returns>
     public static Exception? Run()
     {

@@ -19,6 +19,32 @@ static string Load((string env, string path) input)
     throw new NotImplementedException();
 }
 
+public class PreruntimeFunc
+{
+    public static Func<T, Task> IfDev<T>(Func<T, Task> action)
+    {
+        var env = Env.GetOptional("ASPNETCORE_ENVIRONMENT");
+        if (env == "Development") return action;
+        return (T input) => Task.CompletedTask;
+    }
+
+    public static readonly Func<(string name, string surname), Task> Log = IfDev(
+        ((string name, string surname) input) =>
+        {
+            Console.WriteLine($"Hello {input.name} {input.surname}");
+            return Task.CompletedTask;
+        }
+    );
+
+    public async Task Test()
+    {
+        var name = "Roman";
+        var surname = "Koshchei";
+
+        await Log((name, surname));
+    }
+}
+
 /*
 var root = Directory.GetCurrentDirectory();
 var dotenv = Path.Combine(root, ".env");

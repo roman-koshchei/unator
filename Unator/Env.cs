@@ -8,6 +8,7 @@ public static class Env
     /// <summary>
     /// Load environment variables from file if file exists.
     /// If file doesn't exist then it just do nothing.
+    /// <param name="path">Path to environment file.</param>
     /// </summary>
     public static void LoadFile(string path)
     {

@@ -1,8 +1,11 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using System.Linq.Expressions;
 
-namespace Unator.EntityFrameworkCore;
+namespace Unator;
 
+/// <summary>
+/// Extend IQueryable to ConfigureAwait(false) by default.
+/// </summary>
 public static class QueryExtension
 {
     /// <summary>Query one/first item with ConfigureAwait(false)</summary>
@@ -39,5 +42,23 @@ public static class QueryExtension
     public static async Task<IEnumerable<T>> QueryMany<T>(this IQueryable<T> query, Expression<Func<T, bool>> where)
     {
         return await query.Where(where).ToListAsync().ConfigureAwait(false);
+    }
+}
+
+public static class DbExtension
+{
+    /// <summary>Save changes in database. But doesn't throw.</summary>
+    /// <returns>True if successful, false if not.</returns>
+    public static async Task<bool> Save(this DbContext db)
+    {
+        try
+        {
+            await db.SaveChangesAsync();
+            return true;
+        }
+        catch
+        {
+            return false;
+        }
     }
 }
