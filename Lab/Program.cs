@@ -6,18 +6,14 @@
 
 */
 
+using Lab;
 using Unator;
 
-var result = Maybe.Result(Load, ("beac", "tscri"));
+var error = Preruntime.Run();
+Console.WriteLine(error);
 
-if (result.Data != null)
-{
-}
-
-static string Load((string env, string path) input)
-{
-    throw new NotImplementedException();
-}
+var page = Templates.UserTemplate(new User("ROMAN KOSHCHEI"));
+Console.WriteLine(page);
 
 public class PreruntimeFunc
 {
