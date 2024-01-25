@@ -10,6 +10,8 @@ My goal is to provide a set of functions/classes to make development transparent
 3. [Emails](#emails)
 4. [Storage](#storage)
 
+Check later: [github.com/BinaryBirds/swift-html](https://github.com/BinaryBirds/swift-html)
+
 ## Database / Entity Framework Core
 
 Probably you use Entity Framework Core to access database. I do so.
