@@ -1,13 +1,13 @@
-﻿/*
+﻿using Lab;
+using Unator;
+
+/*
 
     Lab = laboratory
     Test all different things
     See how they work
 
 */
-
-using Lab;
-using Unator;
 
 var error = Preruntime.Run();
 Console.WriteLine(error);

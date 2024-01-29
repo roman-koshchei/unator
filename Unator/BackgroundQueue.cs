@@ -22,7 +22,7 @@ public class BackgroundQueue
     {
         var options = new UnboundedChannelOptions
         {
-            // Because service is singleton.
+            // Queue is supposed to be singleton, otherwith change it to false
             SingleReader = true
         };
         queue = Channel.CreateUnbounded<Func<IServiceProvider, Task>>(options);
