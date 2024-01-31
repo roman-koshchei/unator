@@ -1,0 +1,22 @@
+{
+  "name": "unator-docs",
+  "version": "1.0.0",
+  "description": "Unator docs",
+  "scripts": {
+    "docs:dev": "vitepress dev docs",
+    "docs:build": "vitepress build docs",
+    "docs:preview": "vitepress preview docs"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/roman-koshchei/unator"
+  },
+  "keywords": [
+    "csharp"
+  ],
+  "author": "Roman Koshchei",
+  "license": "MIT",
+  "devDependencies": {
+    "vitepress": "^1.0.0-rc.40"
+  }
+}
