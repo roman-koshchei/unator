@@ -5,6 +5,9 @@ export default defineConfig({
   title: "Unator",
   description:
     "C# utilities, such as typesafe router. Breaking harmful standards is fie.",
+
+  base: "/unator/",
+
   themeConfig: {
     // https://vitepress.dev/reference/default-theme-config
     nav: [{ text: "Introduction", link: "/introduction" }],
