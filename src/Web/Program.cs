@@ -1,15 +1,19 @@
-﻿using System.Net;
-using System.Text;
+﻿using Unator;
 
-var httpListener = new HttpListener();
-
-while (httpListener.IsListening)
+var errors = Preruntime.Run();
+if (errors.Count > 0)
 {
-    var ctx = await httpListener.GetContextAsync();
+    Preruntime.Describe(errors);
+    return;
+}
 
-    ctx.Response.ContentType = "text/html";
-    var bytes = Encoding.UTF8.GetBytes("<h1>Cool</h1>");
-    await ctx.Response.OutputStream.WriteAsync(bytes);
+Console.WriteLine("Running program if ok");
 
-    ctx.Response.Close();
+[Preruntime]
+public static class Secrets
+{
+    static Secrets()
+    {
+        var UNATOR = Env.GetRequired("UNATOR");
+    }
 }
