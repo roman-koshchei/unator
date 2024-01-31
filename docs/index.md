@@ -5,7 +5,7 @@ layout: home
 hero:
   name: "Unator"
   # text: "C# utilities, such as typesafe router. Breaking harmful standards is fie."
-  tagline: C# utilities, such as typesafe router. Breaking harmful standards is fie.
+  tagline: C# utilities, such as typesafe router. Breaking harmful standards is fine.
   actions:
     - theme: brand
       text: Introduction

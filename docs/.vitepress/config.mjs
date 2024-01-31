@@ -7,6 +7,9 @@ export default defineConfig({
     "C# utilities, such as typesafe router. Breaking harmful standards is fie.",
 
   base: "/unator/",
+  sitemap: {
+    hostname: "https://roman-koshchei.github.io",
+  },
 
   themeConfig: {
     // https://vitepress.dev/reference/default-theme-config
