@@ -10,9 +10,9 @@ hero:
     - theme: brand
       text: Introduction
       link: /introduction
-    # - theme: alt
-    #   text: API Examples
-    #   link: /api-examples
+    - theme: alt
+      text: View on GitHub
+      link: https://github.com/roman-koshchei/unator
 
 features:
   - title: Typesafe router

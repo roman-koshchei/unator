@@ -61,8 +61,10 @@ public static class Preruntime
             Console.WriteLine($"{target} {PreruntimeException.Name(error.Type)}");
             Console.ResetColor();
 
-            Console.Write(" ");
-            Console.WriteLine(error.ToString());
+            PreruntimeException.PrintToConsole(error);
+
+            //Console.Write(" ");
+            //Console.WriteLine(error.ToString());
             Console.WriteLine();
         }
     }
@@ -84,10 +86,39 @@ public class PreruntimeException(Type type, Exception error) : Exception($"Excep
     {
         return type.FullName ?? type.Name;
     }
+
+    public static void PrintToConsole(Exception error)
+    {
+        Console.ForegroundColor = ConsoleColor.Yellow;
+        Console.WriteLine($"Error Message: {error.Message}");
+        Console.ResetColor();
+
+        // Print inner exception recursively
+        if (error.InnerException != null)
+        {
+            Console.ForegroundColor = ConsoleColor.Gray;
+            Console.WriteLine("Inner Exception:");
+            PrintToConsole(error.InnerException);
+            Console.ResetColor();
+        }
+
+        // Print stack trace
+        Console.ForegroundColor = ConsoleColor.Gray;
+        Console.WriteLine($"Stack Trace: {error.StackTrace}");
+        Console.ResetColor();
+    }
 }
 
 /// <summary>Mark class for Preruntime static initialization.</summary>
 [AttributeUsage(AttributeTargets.Class | AttributeTargets.Struct | AttributeTargets.Interface, AllowMultiple = false, Inherited = false)]
 public class PreruntimeAttribute : Attribute
 {
+}
+
+public static class ExceptionExtension
+{
+    public static void BeautifulPrint(this Exception ex)
+    {
+        var name = ex.GetType().Name;
+    }
 }

@@ -10,6 +10,7 @@ export default defineConfig({
   sitemap: {
     hostname: "https://roman-koshchei.github.io",
   },
+  cleanUrls: true,
 
   themeConfig: {
     // https://vitepress.dev/reference/default-theme-config
@@ -19,6 +20,14 @@ export default defineConfig({
       {
         text: "Introduction",
         link: "/introduction",
+        // items: [
+        //   { text: "Markdown Examples", link: "/markdown-examples" },
+        //   { text: "Runtime API Examples", link: "/api-examples" },
+        // ],
+      },
+      {
+        text: "Getting Started",
+        link: "/getting-started",
         // items: [
         //   { text: "Markdown Examples", link: "/markdown-examples" },
         //   { text: "Runtime API Examples", link: "/api-examples" },

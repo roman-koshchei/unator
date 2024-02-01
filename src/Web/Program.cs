@@ -7,13 +7,10 @@ if (errors.Count > 0)
     return;
 }
 
-Console.WriteLine("Running program if ok");
+Console.WriteLine($"Environment variable for UNATOR: {SECRETS.UNATOR}");
 
 [Preruntime]
-public static class Secrets
+public static class SECRETS
 {
-    static Secrets()
-    {
-        var UNATOR = Env.GetRequired("UNATOR");
-    }
+    public static readonly string UNATOR = Env.GetRequired("UNATOR");
 }
