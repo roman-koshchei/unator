@@ -1,0 +1,173 @@
+{
+  "main": {
+    "id": "dddb653ad474e94f",
+    "type": "split",
+    "children": [
+      {
+        "id": "772a9461640dee28",
+        "type": "tabs",
+        "children": [
+          {
+            "id": "83ab2eef2617b7fb",
+            "type": "leaf",
+            "state": {
+              "type": "kanban",
+              "state": {
+                "file": "board.md"
+              }
+            }
+          },
+          {
+            "id": "9c75428fec2f41ac",
+            "type": "leaf",
+            "state": {
+              "type": "markdown",
+              "state": {
+                "file": "board.md",
+                "mode": "source",
+                "source": false
+              }
+            }
+          }
+        ]
+      }
+    ],
+    "direction": "vertical"
+  },
+  "left": {
+    "id": "7a803a1f95cc63b1",
+    "type": "split",
+    "children": [
+      {
+        "id": "5ec0df51970cd1a4",
+        "type": "tabs",
+        "children": [
+          {
+            "id": "7b349b9d765139f2",
+            "type": "leaf",
+            "state": {
+              "type": "file-explorer",
+              "state": {
+                "sortOrder": "alphabetical"
+              }
+            }
+          },
+          {
+            "id": "b5a98c5e625daed8",
+            "type": "leaf",
+            "state": {
+              "type": "search",
+              "state": {
+                "query": "",
+                "matchingCase": false,
+                "explainSearch": false,
+                "collapseAll": false,
+                "extraContext": false,
+                "sortOrder": "alphabetical"
+              }
+            }
+          },
+          {
+            "id": "7452f0f2fd75cc62",
+            "type": "leaf",
+            "state": {
+              "type": "bookmarks",
+              "state": {}
+            }
+          }
+        ]
+      }
+    ],
+    "direction": "horizontal",
+    "width": 300
+  },
+  "right": {
+    "id": "1ae7e979944f500b",
+    "type": "split",
+    "children": [
+      {
+        "id": "46caab2045613582",
+        "type": "tabs",
+        "children": [
+          {
+            "id": "3f9a6c972d5a8445",
+            "type": "leaf",
+            "state": {
+              "type": "backlink",
+              "state": {
+                "file": "board.md",
+                "collapseAll": false,
+                "extraContext": false,
+                "sortOrder": "alphabetical",
+                "showSearch": false,
+                "searchQuery": "",
+                "backlinkCollapsed": false,
+                "unlinkedCollapsed": true
+              }
+            }
+          },
+          {
+            "id": "69f5b509e9232a76",
+            "type": "leaf",
+            "state": {
+              "type": "outgoing-link",
+              "state": {
+                "file": "board.md",
+                "linksCollapsed": false,
+                "unlinkedCollapsed": true
+              }
+            }
+          },
+          {
+            "id": "304899cb25bb394e",
+            "type": "leaf",
+            "state": {
+              "type": "tag",
+              "state": {
+                "sortOrder": "frequency",
+                "useHierarchy": true
+              }
+            }
+          },
+          {
+            "id": "50c6c9e1021d8093",
+            "type": "leaf",
+            "state": {
+              "type": "outline",
+              "state": {
+                "file": "board.md"
+              }
+            }
+          }
+        ]
+      }
+    ],
+    "direction": "horizontal",
+    "width": 300,
+    "collapsed": true
+  },
+  "left-ribbon": {
+    "hiddenItems": {
+      "switcher:Open quick switcher": false,
+      "graph:Open graph view": false,
+      "canvas:Create new canvas": false,
+      "daily-notes:Open today's daily note": false,
+      "templates:Insert template": false,
+      "command-palette:Open command palette": false
+    }
+  },
+  "active": "7b349b9d765139f2",
+  "lastOpenFiles": [
+    "board/Clean up Emails.md",
+    "board.md",
+    "board/Env serialization.md",
+    "board",
+    "introduction.md",
+    "index.md",
+    "board/Env documentation.md",
+    "getting-started.md",
+    "Untitled.md",
+    "Untitled.canvas",
+    "2024-02-02.md"
+  ]
+}
