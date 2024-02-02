@@ -1,2 +1,0 @@
-- [ ] Create documentation with examples in documentation folder
-- [ ] Fix docs inside of code

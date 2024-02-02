@@ -20,10 +20,6 @@ export default defineConfig({
       {
         text: "Introduction",
         link: "/introduction",
-        // items: [
-        //   { text: "Markdown Examples", link: "/markdown-examples" },
-        //   { text: "Runtime API Examples", link: "/api-examples" },
-        // ],
       },
       {
         text: "Getting Started",
@@ -33,10 +29,15 @@ export default defineConfig({
         //   { text: "Runtime API Examples", link: "/api-examples" },
         // ],
       },
+      {
+        text: "Env",
+        link: "/env",
+      },
     ],
 
     socialLinks: [
       { icon: "github", link: "https://github.com/roman-koshchei/unator" },
+      { icon: "twitter", link: "https://twitter.com/roman_koshchei" },
     ],
   },
 })
