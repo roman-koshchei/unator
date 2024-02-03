@@ -60,3 +60,14 @@ So you can send not only text, but html as well if email client supports showing
 Writing 2 versions: text and html by yourself is kind of annoying. Moreover not all html and css is supported in emails.
 
 So in future I plan to create an Email Templating inspired by [React Email](https://react.email/). React Email gives you components that will generate html suitable for email clients.
+
+Code Example how I see it:
+
+```csharp
+var email = Html(
+	Button("Click me").Href("https://example.com").Style("color: #6366f1")
+).Lang("en");
+
+var html = email.RenderHtml();
+var text = email.RenderText();
+``` 
