@@ -122,11 +122,11 @@ public class EmailService
 }
 
 /// <summary>Manage several email senders.</summary>
-public class EmailGod : IEmailSender
+public class EmailSwitch : IEmailSender
 {
     private readonly IImmutableList<EmailService> services;
 
-    public EmailGod(EmailService service, params EmailService[] services)
+    public EmailSwitch(EmailService service, params EmailService[] services)
     {
         var list = new List<EmailService>(services.Length + 1) { service };
         list.AddRange(services);

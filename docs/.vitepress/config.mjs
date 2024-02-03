@@ -30,6 +30,10 @@ export default defineConfig({
         // ],
       },
       {
+        text: "Email Switch",
+        link: "/emails",
+      },
+      {
         text: "Env",
         link: "/env",
       },

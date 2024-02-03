@@ -1,43 +1,62 @@
-# Emails
+# Email switch
 
-That's where things go interesting. I provide `EmailGod` class, which will manage several email services. You get benefits:
+I bet you need to send emails in almost any kind of projects. SaaS or just marketing page with "subscribe to newsletter".
 
-- higher chance of delivering email: 1 service fails, use another one.
-- more free plan resources.
+And that's where things go interesting.
 
-At the current moment Unator supports sending emails from:
+I provide `EmailSwitch` class, which will manage several email services. You get benefits:
 
-- Resend <- the best one
-- Mailjet
-- SendGrid
-- Brevo
+- higher chance of delivering email: if 1 service fails, use another one
+- more free plan resources ;)
 
-`EmailGod` implements same interface as email senders. I highly recommend using at least 2 services to be unstoppable.
-
-Code looks:
+Code example:
 
 ```csharp
-var resendApiKey = Env.Get("RESEND_API_KEY");
-var brevoApiKey = Env.Get("BREVO_API_KEY");
-
-var emailGod = new EmailGod(
-  new EmailService(new Resend(resendApiKey), new DayLimiter(100)),
-  new EmailService(new Brevo(brevoApiKey), new DayLimiter(300)),
+var email = new EmailSwitch(
+    new EmailService(new Resend("resend-api-token"), new DayLimiter(100)),
+    new EmailService(new Brevo("brevo-api-token"), new DayLimiter(300)),
+    new EmailService(new SendGrid("send-grid-api-token"), new DayLimiter(100))
 );
 
-var emailStatus = await emailGod.Send(
-  fromEmail: "example@mail.com",
-  fromName: "example",
-  toEmails: new List<string>() { "me@mail.com" },
-  subject: "Showing EmailGod",
-  text: $"It's beautiful",
-  html: $"<a href='https://github.com/roman-koshchei/unator'>GitHub</a>"
+var sent = await email.Send("romankoshchei@gmail.com", "Roman Koshchei",
+	to: ["roman@flurium.com"],
+    subject: "I own Flurium",
+    text: "Hi me from flurium account!",
+    html: "<h1>Hi me from flurium account!</h1>"
 );
 
-if(emailStatus == EmailStatus.Success) {
-  Console.WriteLine("Success");
-}
+Console.WriteLine(sent switch
+{
+    EmailStatus.Success => "Success",
+    EmailStatus.LimitReached => "Limits are reached",
+    _ => "Can't send an email"
+});
 ```
 
-We may change it in future if more functionality will be required. For example, move email
-information to seperate class/struct to persist it. But it's good for now.
+`EmailSwitch` implements same interface as email senders. I highly recommend using at least 2 services to be unstoppable.
+
+## Support
+
+|          | Link                                 | Tested |
+| -------- | ------------------------------------ | ------ |
+| Resend   | [resend.com](https://resend.com)     | yes    |
+| SendGrid | [sendgrid.com](https://sendgrid.com) | yes    |
+| Brevo    | [brevo.com](https://www.brevo.com/)  | yes    |
+
+## Inspiration
+
+I saw [Hyperswitch](https://hyperswitch.io/) on a trending list in GitHub long time ago and kept an eye on it.
+It's a switch for payments. Basically allowing support of different payments methods and processors.
+
+While developing [Spentoday](https://www.spentoday.com/), I decided to do same thing but for emails. It was a StartUp and I wanted to spend 0 money on infrastructure. So I just used free limits from Resend, Send Grid and Brevo to send our emails.
+
+We actually didn't need so much, but surely EmailSwitch will be useful in future.
+
+## Templating
+
+As you have seen above in a Code Example in `Send` method there is argument `html`.
+So you can send not only text, but html as well if email client supports showing html.
+
+Writing 2 versions: text and html by yourself is kind of annoying. Moreover not all html and css is supported in emails.
+
+So in future I plan to create an Email Templating inspired by [React Email](https://react.email/). React Email gives you components that will generate html suitable for email clients.

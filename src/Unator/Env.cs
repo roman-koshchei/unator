@@ -2,6 +2,36 @@
 
 namespace Unator;
 
+public class EnvInteresting
+{
+    public struct EnvVar<T> where T : IParsable<T>
+    {
+        public T Value { get; }
+    }
+
+    public readonly struct EnvOptional<T> where T : IParsable<T>
+    {
+        public required T? Value { get; init; }
+
+        public static implicit operator T?(EnvOptional<T> env)
+        {
+            return env.Value;
+        }
+
+        public static implicit operator EnvOptional<T>(T? val)
+        {
+            return new EnvOptional<T> { Value = val };
+        }
+    }
+
+    [Env]
+    public static class Secrets
+    {
+        public static readonly EnvVar<string> DB_CONNECTION_STRING;
+        public static readonly EnvOptional<bool> IS_DEVELOPMENT = false;
+    }
+}
+
 public static class EnvExample
 {
     public static void Run()
