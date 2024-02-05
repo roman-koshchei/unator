@@ -1,10 +1,36 @@
 ﻿using System.Collections.Immutable;
 using System.Net;
 using System.Net.Http.Headers;
-using System.Text.Json;
 using System.Text;
+using System.Text.Json;
 
 namespace Unator;
+
+public static class EmailExample
+{
+    public static async Task Run()
+    {
+        var email = new EmailSwitch(
+            new EmailService(new Resend("resend-api-token"), new DayLimiter(100)),
+            new EmailService(new Brevo("brevo-api-token"), new DayLimiter(300)),
+            new EmailService(new SendGrid("send-grid-api-token"), new DayLimiter(100))
+        );
+
+        var sent = await email.Send("romankoshchei@gmail.com", "Roman Koshchei",
+            to: ["roman@flurium.com"],
+            subject: "I own Flurium",
+            text: "Hi me from flurium account!",
+            html: "<h1>Hi me from flurium account!</h1>"
+        );
+
+        Console.WriteLine(sent switch
+        {
+            EmailStatus.Success => "Success",
+            EmailStatus.LimitReached => "Limits are reached",
+            _ => "Can't send an email"
+        });
+    }
+}
 
 public interface ILimiter
 {

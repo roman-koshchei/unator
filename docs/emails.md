@@ -37,11 +37,12 @@ Console.WriteLine(sent switch
 
 ## Support
 
-|          | Link                                 | Tested |
-| -------- | ------------------------------------ | ------ |
-| Resend   | [resend.com](https://resend.com)     | yes    |
-| SendGrid | [sendgrid.com](https://sendgrid.com) | yes    |
-| Brevo    | [brevo.com](https://www.brevo.com/)  | yes    |
+|          | Link                                   | Tested |
+| -------- | -------------------------------------- | ------ |
+| Resend   | [resend.com](https://resend.com)       | yes    |
+| SendGrid | [sendgrid.com](https://sendgrid.com)   | yes    |
+| Brevo    | [brevo.com](https://www.brevo.com)     | yes    |
+| Mailjet  | [mailjet.com](https://www.mailjet.com) | no     |
 
 ## Inspiration
 
@@ -70,4 +71,4 @@ var email = Html(
 
 var html = email.RenderHtml();
 var text = email.RenderText();
-``` 
+```
