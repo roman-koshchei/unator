@@ -37,6 +37,7 @@ public static class EnvExample
     public static void Run()
     {
         Env.LoadFile("./.env");
+    
         var errors = Env.Ensure();
         if (errors.Count > 0)
         {
@@ -50,7 +51,7 @@ public static class EnvExample
     [Env]
     public static class Options
     {
-        public static string CookieDomain { get; } = Env.GetRequired("COOKIE_DOMAIN");
+        public static int CookieDuration { get; } = Env.GetRequired<int>("COOKIE_DURATION");
         public static readonly string DbConnectionStr = Env.GetRequired("DB_CONNECTION_STRING");
     }
 }

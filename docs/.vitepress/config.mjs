@@ -37,6 +37,10 @@ export default defineConfig({
         text: "Env",
         link: "/env",
       },
+      {
+        text: "Experimental",
+        items: [{ text: "Database", link: "/experimental/database" }],
+      },
     ],
 
     socialLinks: [

@@ -5,20 +5,17 @@
     <Nullable>enable</Nullable>
     <ImplicitUsings>enable</ImplicitUsings>
     <InvariantGlobalization>true</InvariantGlobalization>
-    <UserSecretsId>ae75a417-1fe1-40c5-917d-7bbee2fdf269</UserSecretsId>
+    <UserSecretsId>f953310b-c956-4aae-a9ab-ea631fb64282</UserSecretsId>
     <DockerDefaultTargetOS>Linux</DockerDefaultTargetOS>
     <DockerfileContext>..\..</DockerfileContext>
   </PropertyGroup>
-
-  <ItemGroup>
-    <Content Include="Properties\launchSettings.json" />
-  </ItemGroup>
 
   <ItemGroup>
     <PackageReference Include="Microsoft.VisualStudio.Azure.Containers.Tools.Targets" Version="1.19.5" />
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\Unator.Extensions\Unator.Extensions.csproj" />
     <ProjectReference Include="..\Unator\Unator.csproj" />
   </ItemGroup>
 

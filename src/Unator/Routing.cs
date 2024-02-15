@@ -1,44 +1,37 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Net;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace Unator;
+﻿namespace Unator;
 
 public static class RoutingExample
 {
     public static async Task Run()
     {
-        var productRoute = U.Route(
-            path: U.Path("admin/shops").Param<int>().Path("products"),
-            handler: async (shopId, ctx) =>
-            {
-                ctx.Response.StatusCode = 200;
-                var str = $"<h1>admin/shops/{shopId}/products</h1><p>{shopId} is int</p>";
-                ctx.Response.OutputStream.Write(Encoding.UTF8.GetBytes(str));
-            }
-        );
+        //var productRoute = U.Route(
+        //    path: U.Path("admin/shops").Param<int>().Path("products"),
+        //    handler: async (shopId, ctx) =>
+        //    {
+        //        ctx.Response.StatusCode = 200;
+        //        var str = $"<h1>admin/shops/{shopId}/products</h1><p>{shopId} is int</p>";
+        //        ctx.Response.OutputStream.Write(Encoding.UTF8.GetBytes(str));
+        //    }
+        //);
 
-        var productStrRoute = U.Route(
-            path: U.Path("admin/shops").Param<string>().Path("products"),
-            handler: async (shopId, ctx) =>
-            {
-                ctx.Response.StatusCode = 200;
-                var str = $"<h1>admin/shops/{shopId}/products</h1><p>{shopId} is string</p>";
-                ctx.Response.OutputStream.Write(Encoding.UTF8.GetBytes(str));
-            }
-        );
+        //var productStrRoute = U.Route(
+        //    path: U.Path("admin/shops").Param<string>().Path("products"),
+        //    handler: async (shopId, ctx) =>
+        //    {
+        //        ctx.Response.StatusCode = 200;
+        //        var str = $"<h1>admin/shops/{shopId}/products</h1><p>{shopId} is string</p>";
+        //        ctx.Response.OutputStream.Write(Encoding.UTF8.GetBytes(str));
+        //    }
+        //);
 
-        IURoute[] routes = { productRoute, productStrRoute };
+        //IURoute[] routes = { productRoute, productStrRoute };
 
-        var handledSuccessfully = false;
-        for (int i = 0; i < routes.Length && handledSuccessfully == false; i += 1)
-        {
-            var route = routes[i];
-            //handledSuccessfully = await route.TryRun();
-        }
+        //var handledSuccessfully = false;
+        //for (int i = 0; i < routes.Length && handledSuccessfully == false; i += 1)
+        //{
+        //    var route = routes[i];
+        //    //handledSuccessfully = await route.TryRun();
+        //}
     }
 }
 
@@ -46,13 +39,16 @@ public class U
 {
     public static UPath Path(string path) => UPath.New().Path(path);
 
-    public static UPath<T> Param<T>() where T : IConvertible => UPath<T>.New();
+    public static UPath<T> Param<T>() where T : IParsable<T> => UPath<T>.New();
 
-    public static URoute<T> Route<T>(UPath<T> path, Func<T, HttpListenerContext, Task> handler) where T : IConvertible
+    public static URoute<U, T> Route<U, T>(UPath<T> path, Func<T, U, Task> handler) where T : IParsable<T>
     {
         return new() { Path = path, Handler = handler };
     }
-
+    public static URoute<T> Route<T>(UPath path, Func<T, Task> handler) 
+    {
+        return new() { Path = path, Handler = handler };
+    }
     //public static URoute<T, U> Route<T, U>(
     //    UPath<T, U> path, Func<T, U, HttpListenerContext, Task> handler
     //) where T : IConvertible where U : IConvertible
@@ -63,17 +59,17 @@ public class U
 
 // ROUTE
 
-public interface IURoute
+public interface IURoute<T>
 {
-    public Task<bool> TryRun(IEnumerable<string> path, HttpListenerContext ctx);
+    public Task<bool> TryRun(IEnumerable<string> path, T ctx);
 }
 
-public class URoute : IURoute
+public class URoute<T> : IURoute<T>
 {
     public UPath Path { get; init; }
-    public Func<HttpListenerContext, Task> Handler { get; init; }
+    public Func<T, Task> Handler { get; init; }
 
-    public async Task<bool> TryRun(IEnumerable<string> pathSegments, HttpListenerContext ctx)
+    public async Task<bool> TryRun(IEnumerable<string> pathSegments, T ctx)
     {
         var count = pathSegments.Count();
         if (Path.Segments.Count() != count) return false;
@@ -88,12 +84,13 @@ public class URoute : IURoute
     }
 }
 
-public class URoute<Param1> : IURoute where Param1 : IConvertible
+public class URoute<T, Param1> : IURoute<T> where Param1 : IParsable<Param1>
 {
-    public UPath<Param1> Path { get; init; }
-    public Func<Param1, HttpListenerContext, Task> Handler { get; init; }
+    public required UPath<Param1> Path { get; init; }
+    public required Func<Param1, T, Task> Handler { get; init; }
 
-    public async Task<bool> TryRun(IEnumerable<string> pathSegments, HttpListenerContext ctx)
+
+    public async Task<bool> TryRun(IEnumerable<string> pathSegments, T ctx)
     {
         // some/path/:param/another/path
 
@@ -110,7 +107,7 @@ public class URoute<Param1> : IURoute where Param1 : IConvertible
         Param1 param;
         try
         {
-            param = (Param1)Convert.ChangeType(pathSegments.ElementAt(i), typeof(Param1));
+            param = Param1.Parse(pathSegments.ElementAt(i), null);
             i += 1;
         }
         catch
@@ -145,7 +142,7 @@ public class UPath
 
     public static UPath New() => new();
 
-    public UPath<T> Param<T>() where T : IConvertible => UPath<T>.New(Segments);
+    public UPath<T> Param<T>() where T : IParsable<T> => UPath<T>.New(Segments);
 
     public UPath Path(string path)
     {
@@ -154,12 +151,17 @@ public class UPath
     }
 }
 
-public class UPath<Param1> where Param1 : IConvertible
+public class UPath<Param1> where Param1 : IParsable<Param1>
 {
     public IEnumerable<string> BeforeParam { get; private set; } = Array.Empty<string>();
     public IEnumerable<string> AfterParam { get; private set; } = Array.Empty<string>();
 
     //public UPath<Param1, Param2> Param<Param2>() where Param2 : IConvertible => new() { Val = $"{Val}/{typeof(Param2).Name}" };
+
+    public string Url(Param1 param1)
+    {
+        return $"{param1}";
+    }
 
     public static UPath<Param1> New(IEnumerable<string> pathBeforeParam) => new() { BeforeParam = pathBeforeParam };
 

@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace Unator;
+﻿namespace Unator;
 
 public class CachedServiceExample
 {
@@ -65,6 +59,7 @@ public class CachedService<T> where T : new()
     }
 
     public T Get => getter();
+    public T It => getter();
 }
 
 public class MixCachedService<T> where T : new()

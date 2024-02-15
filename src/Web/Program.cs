@@ -1,49 +1,43 @@
-﻿using System;
-using System.Diagnostics;
-using System.Net;
-using System.Threading.Channels;
-using Unator;
+﻿using Unator;
 
-Stopwatch stopwatch = new();
-stopwatch.Start();
+var now = DateTime.UtcNow;
 
-var channel = Channel.CreateUnbounded<string>();
-var tasks = new List<Task>();
+//Stopwatch stopwatch = new();
+//stopwatch.Start();
 
-for (int i = 1; i < 9; i++)
-{
-    tasks.Add(DoWork(i * 1000, channel));
-}
+//var channel = Channel.CreateUnbounded<string>();
+//var tasks = new List<Task>();
 
-_ = Task.Run(async () =>
-{
-    await foreach (var result in channel.Reader.ReadAllAsync())
-    {
-        Console.WriteLine($"r1: {result}");
-    }
-    Console.WriteLine("Reader 1 is complete.");
-});
+//for (int i = 1; i < 10; i++)
+//{
+//    tasks.Add(DoWork(i * 1000, channel));
+//}
 
-_ = Task.Run(async () =>
-{
-    await foreach (var result in channel.Reader.ReadAllAsync())
-    {
-        Console.WriteLine($"r2: {result}");
-    }
-    Console.WriteLine("Reader 2 is complete.");
-});
+//// Channel ballence automatically
+//// So we can spin up any amount of readers without problems
+//for (int i = 0; i < 3; i++)
+//{
+//    _ = Task.Factory.StartNew(async (num) =>
+//    {
+//        await foreach (var result in channel.Reader.ReadAllAsync())
+//        {
+//            Console.WriteLine($"r{num}: {result}");
+//        }
+//        Console.WriteLine($"Reader {num} is complete.");
+//    }, state: i);
+//}
 
-// Come together to stop reader
-Task.WaitAll([.. tasks]);
-channel.Writer.Complete();
+//// Come together to stop reader
+//Task.WaitAll([.. tasks]);
+//channel.Writer.Complete();
 
-stopwatch.Stop();
-Console.WriteLine($"Overall time: {stopwatch.ElapsedMilliseconds} ms");
+//stopwatch.Stop();
+//Console.WriteLine($"Overall time: {stopwatch.ElapsedMilliseconds} ms");
 
-static async Task DoWork(int duration, Channel<string> channel)
-{
-    Console.WriteLine("Doing work...");
-    await Task.Delay(duration);
-    Console.WriteLine("Work is done!");
-    await channel.Writer.WriteAsync($"Work duration was: {duration} ms");
-}
+//static async Task DoWork(int duration, Channel<string> channel)
+//{
+//    Console.WriteLine("Doing work...");
+//    await Task.Delay(duration);
+//    Console.WriteLine("Work is done!");
+//    await channel.Writer.WriteAsync($"Work duration was: {duration} ms");
+//}
