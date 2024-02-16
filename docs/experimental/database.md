@@ -36,6 +36,35 @@ Here is simple scheme for you:
 
 ![Many instances](../media/many-instances.png)
 
+### Data synchronization
+
+This is problem I bring with database design. I'm confident we can find a
+solution since others have resolved similar problems.
+
+Synchronization is about mutations, because queries don't change anything.
+Certain mutations don't conflict between each other: changes in different tables,
+update + delete (delete wins anyway).
+
+But of course there are problems. For example, 2 updates on the same record
+on the same field.
+
+So first thing we can introduce is marking each mutation with _UTC Time_. So
+we can sort and sync operations based on time. But what if operations happen
+at the same time? Such situation may appear, because we have different servers.
+
+So we need some decentralized way to difine which operations should win. And I
+have maybe crazy idea, but in such case, where 2 updates happen on the same
+record, on the same field, at the same time, we will just compare the serialized
+data like we compare strings and difine order from it.
+
+I just don't see or know better solution. This one is pretty fine, and it will
+happen super reraly. Most of the time _UTC Time_ of record will be enough and
+fair determination of priority.
+
+But I think we may introduce some flag to mark certain operation as _Important_,
+so it will win without string-like comparison, if operations happen at the same
+time. But it may be overhead.
+
 ## Storing data
 
 I don't plan to keep all data in memory, because it's too expensive.
