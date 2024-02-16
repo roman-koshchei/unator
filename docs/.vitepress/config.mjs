@@ -24,22 +24,24 @@ export default defineConfig({
       {
         text: "Getting Started",
         link: "/getting-started",
-        // items: [
-        //   { text: "Markdown Examples", link: "/markdown-examples" },
-        //   { text: "Runtime API Examples", link: "/api-examples" },
-        // ],
-      },
-      {
-        text: "Email Switch",
-        link: "/emails",
       },
       {
         text: "Env",
         link: "/env",
       },
       {
+        text: "Switches",
+        items: [
+          { text: "Email", link: "/switches/email" },
+          { text: "Storage", link: "/switches/storage" },
+        ],
+      },
+      {
         text: "Experimental",
-        items: [{ text: "Database", link: "/experimental/database" }],
+        items: [
+          { text: "Database", link: "/experimental/database" },
+          { text: "Router", link: "/experimental/router" },
+        ],
       },
     ],
 

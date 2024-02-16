@@ -1,4 +1,4 @@
-## Storage
+# Storage switch
 
 Almost all applications nowadays require storage to store images.
 I got you. The goal is almost same as EmailGod's goal. We generalize storages to

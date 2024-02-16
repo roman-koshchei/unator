@@ -31,11 +31,11 @@ public interface IStorage
     public Task<bool> Delete(StorageFile file);
 }
 
-public class StorageGod : IStorage
+public class StorageSwitch : IStorage
 {
     private readonly IImmutableList<IStorage> storages;
 
-    public StorageGod(IStorage storage, params IStorage[] storages)
+    public StorageSwitch(IStorage storage, params IStorage[] storages)
     {
         var list = new List<IStorage>(storages.Length + 1) { storage };
         list.AddRange(storages);
