@@ -4,8 +4,6 @@ using Unator;
 
 var builder = WebApplication.CreateBuilder(args);
 
-builder.Services.AddScoped<Loader>();
-
 var app = builder.Build();
 
 app.UseHttpsRedirection();
@@ -32,8 +30,6 @@ app.Use(async (ctx, next) =>
 });
 
 app.Run();
-
-// Folder DB
 
 public class Loader
 {
