@@ -4,23 +4,26 @@ using Web;
 
 string? preheader = "Showing Jooble Unator library";
 
-var email = Email.Html(
-    preheader is not null ? Email.Preview(preheader) : Email.Empty(),
+//var email = Email.Html("lang='uk' style='display:none;'",
 
-    Email.H1("Hi Jooble"),
+//    ("style", "display:none;"), ("lang", "uk"), ("disabled")
 
-    Email.Link(href: "https://roman-koshchei.github.io/unator", "Best C# utilities")
-);
+//    preheader is not null ? Email.Preview(preheader) : Email.Empty(),
 
-var text = new StringBuilder();
-email.RenderText(text);
-Console.WriteLine(text.ToString());
-Console.WriteLine();
+//    Email.H1("Hi Jooble"),
 
-var html = new StringBuilder();
-email.RenderHtml(html);
-Console.WriteLine(html.ToString());
-Console.WriteLine();
+//    Email.Link(href: "https://roman-koshchei.github.io/unator", "Best C# utilities")
+//).Style("display:none;").Lang("uk").Attribute("dlr", "blablabla").Flag("disabled");
+
+//var text = new StringBuilder();
+//email.RenderText(text);
+//Console.WriteLine(text.ToString());
+//Console.WriteLine();
+
+//var html = new StringBuilder();
+//email.RenderHtml(html);
+//Console.WriteLine(html.ToString());
+//Console.WriteLine();
 
 //var db = UmbeddedDb.Open("./umbedded");
 //if (!db.HasVal)

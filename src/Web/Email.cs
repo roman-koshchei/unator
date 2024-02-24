@@ -68,7 +68,7 @@ public struct TextElement(IElement[] children) : IElement
         sb.Append('\n');
         foreach (var child in children)
         {
-            child.RenderHtml(sb);
+            child.RenderText(sb);
         }
         sb.Append('\n');
     }
@@ -79,7 +79,7 @@ public struct HtmlElement(IElement[] children) : IElement
     public void RenderHtml(StringBuilder sb)
     {
         sb.Append("<!DOCTYPE html PUBLIC \"-//W3C//DTD XHTML 1.0 Transitional//EN\" \"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd\">");
-        sb.Append("<html>");
+        sb.Append("<html lang=\"uk\">");
         foreach (var child in children)
         {
             child.RenderHtml(sb);
@@ -91,7 +91,7 @@ public struct HtmlElement(IElement[] children) : IElement
     {
         foreach (var child in children)
         {
-            child.RenderHtml(sb);
+            child.RenderText(sb);
         }
     }
 }

@@ -43,6 +43,10 @@ export default defineConfig({
           { text: "Router", link: "/experimental/router" },
         ],
       },
+      {
+        text: "Showcase",
+        items: [{ text: "Spentoday", link: "/showcase/spentoday" }],
+      },
     ],
 
     socialLinks: [
