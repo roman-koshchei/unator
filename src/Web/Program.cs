@@ -2,7 +2,31 @@
 using System.Text;
 using Web;
 
-string? preheader = "Showing Jooble Unator library";
+var e = new Emploee(5, 6);
+
+List<int> list = new List<int>();
+
+internal class Person
+{
+    private int i;
+
+    public Person(int i)
+    {
+        this.i = i;
+        Console.WriteLine("Person constructor");
+    }
+}
+
+internal class Emploee : Person
+{
+    private int b;
+
+    public Emploee(int i, int b) : base(i)
+    {
+        this.b = b;
+        Console.WriteLine("Emploee constructor");
+    }
+}
 
 //var email = Email.Html("lang='uk' style='display:none;'",
 
@@ -94,7 +118,7 @@ public class ResultRef<T> where T : class
         get => Val != null;
     }
 
-    public ResultRef()
+    private ResultRef()
     { }
 
     public static ResultRef<T> Ok([NotNull] T value)

@@ -17,3 +17,4 @@ And because we needed to start without spending as little as possible, I designe
 
 - [Email switch](../switches/email.md) to use several email services
 - [Storage switch](../switches/storage.md) to use several storages in future
+`
