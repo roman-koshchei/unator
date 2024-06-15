@@ -1,0 +1,7 @@
+﻿@using Mvc.Controllers
+@model ItemModel;
+
+
+<h1>Rendering Partial inside of View</h1>
+
+@await HomeController.ItemPartial.Render(Html, Model);

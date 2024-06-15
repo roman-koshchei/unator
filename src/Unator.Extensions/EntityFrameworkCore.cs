@@ -49,7 +49,7 @@ public static class DbExtension
 {
     /// <summary>Save changes in database. But doesn't throw.</summary>
     /// <returns>True if successful, false if not.</returns>
-    public static async Task<bool> Save(this DbContext db)
+    public static async Task<bool> SafeSave(this DbContext db)
     {
         try
         {
@@ -59,6 +59,36 @@ public static class DbExtension
         catch
         {
             return false;
+        }
+    }
+
+    /// <summary>
+    /// AddRangeAsync to database table, but checks if values count > 0.
+    /// If count == 0, then default AddRangeAsync will throw an exception.
+    /// </summary>
+    public static async Task SafeAddRange<T>(
+        this DbSet<T> table, IEnumerable<T> values,
+        CancellationToken cancellationToken = default
+    ) where T : class
+    {
+        if (values.Any() is false) return;
+
+        await table.AddRangeAsync(values, cancellationToken);
+    }
+
+    // MUST BE TESTED
+    public static void SafeRemoveRange<T>(
+        this DbSet<T> table, IEnumerable<T> values
+    ) where T : class
+    {
+        foreach (var value in values)
+        {
+            var entry = table.Entry(value);
+            if (entry.State == EntityState.Detached)
+            {
+                table.Attach(value);
+            }
+            entry.State = EntityState.Deleted;
         }
     }
 }

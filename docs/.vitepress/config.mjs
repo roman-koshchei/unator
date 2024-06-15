@@ -37,6 +37,12 @@ export default defineConfig({
         ],
       },
       {
+        text: "MVC Extensions",
+        items: [
+          { text: "Partial", link: "/mvc/partial" },
+        ],
+      },
+      {
         text: "Experimental",
         items: [
           { text: "Database", link: "/experimental/database" },
