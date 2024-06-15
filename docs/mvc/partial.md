@@ -22,7 +22,7 @@ public record Item(string Name, int Number);
 
 2. \_Item.cshtml - partial view for single item.
 
-```cshtml
+```html
 @model Item;
 
 <div class="col">
@@ -64,7 +64,7 @@ public class HomeController
 
 4. Index.cshtml - regular page view, where I demonstrate how to render Partial in Views. As well it contains simple HTMX form to demonstrate usage of Partial as result of Http Post operation.
 
-```cshtml
+```html
 @model IEnumerable<Item>
 
 <form
