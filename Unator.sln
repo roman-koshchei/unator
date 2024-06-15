@@ -3,15 +3,13 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.8.34511.84
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Web", "src\Web\Web.csproj", "{253931AF-2E88-4DF5-97F9-037BEFD72B3F}"
-EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Unator", "src\Unator\Unator.csproj", "{DE0C969B-DF8E-45D1-88B9-FE373CE48BD0}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Asp", "src\Asp\Asp.csproj", "{74D8ED91-2321-461E-B5C8-A91344384A7C}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Unator.Extensions", "src\Unator.Extensions\Unator.Extensions.csproj", "{4AE47118-6AA9-41E5-AA04-DD52F5EDB8FC}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Mvc", "src\Mvc\Mvc.csproj", "{097C0418-42E1-4E86-968A-C0960E13A498}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Mvc", "src\Mvc\Mvc.csproj", "{097C0418-42E1-4E86-968A-C0960E13A498}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -19,10 +17,6 @@ Global
 		Release|Any CPU = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{253931AF-2E88-4DF5-97F9-037BEFD72B3F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{253931AF-2E88-4DF5-97F9-037BEFD72B3F}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{253931AF-2E88-4DF5-97F9-037BEFD72B3F}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{253931AF-2E88-4DF5-97F9-037BEFD72B3F}.Release|Any CPU.Build.0 = Release|Any CPU
 		{DE0C969B-DF8E-45D1-88B9-FE373CE48BD0}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{DE0C969B-DF8E-45D1-88B9-FE373CE48BD0}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{DE0C969B-DF8E-45D1-88B9-FE373CE48BD0}.Release|Any CPU.ActiveCfg = Release|Any CPU

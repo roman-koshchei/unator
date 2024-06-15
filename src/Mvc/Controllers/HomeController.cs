@@ -1,5 +1,6 @@
 using Microsoft.AspNetCore.Mvc;
 using Mvc.Models;
+using System.Collections.Concurrent;
 using System.Diagnostics;
 using Unator.Extensions.Mvc;
 
@@ -7,19 +8,30 @@ namespace Mvc.Controllers;
 
 public class HomeController : Controller
 {
-    private readonly ILogger<HomeController> _logger;
+    private readonly static ConcurrentBag<Item> items = [
+        new("Apple", 1), new("Banana", 56), new("Snake", 98)
+    ];
 
-    public HomeController(ILogger<HomeController> logger)
+    public static readonly Partial<Item> ItemPartial = new ("/Views/Home/_Item.cshtml");
+
+    [NonAction]
+    public static string Url<T>() where T : Controller
     {
-        _logger = logger;
+        return typeof(T).Name.Replace("Controller", "");
     }
-
-
-    public static readonly Partial<ItemModel> ItemPartial = new ("/Views/Home/_Item.cshtml"); 
 
     public IActionResult Index()
     {
-        var item = new ItemModel("room", 216);
+        return View(items);
+    }
+
+    public const string AddItemRoute = "/add-item";
+    
+    [HttpPost(AddItemRoute)]
+    public async Task<IActionResult> AddItem([FromForm] Item item)
+    {
+        await Task.Delay(500);
+        items.Add(item);
         return ItemPartial.Result(this, item);
     }
 
