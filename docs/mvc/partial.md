@@ -35,12 +35,50 @@ public record Item(string Name, int Number);
 </div>
 ```
 
-```cs
-public class HomeController {
+3. HomeController.cs - controller where we will handle logic and keep partials
 
+```cs
+public class HomeController
+{
+  // some store of all items
+  public static ConcurrentBag<Item> Items { get; } = [];
+
+  // define single source of truth about _Item partial
   public static readonly Partial<Item> ItemPartial = new("/Views/Home/_Item.cshtml");
 
+  // home page with a simple list of items
+  public IActionResult Index()
+  {
+    return View(Items);
+  }
 
+  // simple post request for htmx, which returns partial view
+  [HttpPost("/add-item")]
+  public async Task<IActionResult> AddItem([FromForm] Item item)
+  {
+    Items.Add(item);
+    return ItemPartial.Result(this, item);
+  }
 }
+```
 
+4. Index.cshtml - regular page view, where I demonstrate how to render Partial in Views. As well it contains simple HTMX form to demonstrate usage of Partial as result of Http Post operation.
+
+```cshtml
+@model IEnumerable<Item>
+
+<form
+  hx-post="/add-item" hx-target="#items" hx-swap="afterbegin"
+>
+  <input type="text" name="@nameof(Item.Name)" required>
+  <input type="number" name="@nameof(Item.Number)" value="0">
+  <button type="submit">Submit</button>
+</form>
+
+<div id="#items">
+  @foreach(var item in Model)
+  {
+    @await HomeController.ItemPartial.Render(Html, item);
+  }
+</div>
 ```
