@@ -5,7 +5,7 @@ But here is a problem: we don't have only 1 place of truth about partial view.
 
 If we want to render partial, then we need to specify path and pass model (props) value
 
-```cshtml
+```html
 @await Html.PartialAsync("/Views/Shared/_Card.cshtml", "some value");
 ```
 
@@ -26,12 +26,12 @@ public record Item(string Name, int Number);
 @model Item;
 
 <div class="col">
-    <div class="card">
-        <div class="card-body">
-            <h3 class="card-title">@Model.Name</h3>
-            <p class="card-text">@Model.Number</p>
-        </div>
+  <div class="card">
+    <div class="card-body">
+      <h3 class="card-title">@Model.Name</h3>
+      <p class="card-text">@Model.Number</p>
     </div>
+  </div>
 </div>
 ```
 
@@ -66,19 +66,15 @@ public class HomeController
 
 ```html
 @model IEnumerable<Item>
+  <form hx-post="/add-item" hx-target="#items" hx-swap="afterbegin">
+    <input type="text" name="@nameof(Item.Name)" required />
+    <input type="number" name="@nameof(Item.Number)" value="0" />
+    <button type="submit">Submit</button>
+  </form>
 
-<form
-  hx-post="/add-item" hx-target="#items" hx-swap="afterbegin"
+  <div id="#items">
+    @foreach(var item in Model) { @await HomeController.ItemPartial.Render(Html,
+    item); }
+  </div></Item
 >
-  <input type="text" name="@nameof(Item.Name)" required>
-  <input type="number" name="@nameof(Item.Number)" value="0">
-  <button type="submit">Submit</button>
-</form>
-
-<div id="#items">
-  @foreach(var item in Model)
-  {
-    @await HomeController.ItemPartial.Render(Html, item);
-  }
-</div>
 ```
