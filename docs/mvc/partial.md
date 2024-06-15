@@ -65,16 +65,16 @@ public class HomeController
 4. Index.cshtml - regular page view, where I demonstrate how to render Partial in Views. As well it contains simple HTMX form to demonstrate usage of Partial as result of Http Post operation.
 
 ```html
-@model IEnumerable<Item>
-  <form hx-post="/add-item" hx-target="#items" hx-swap="afterbegin">
-    <input type="text" name="@nameof(Item.Name)" required />
-    <input type="number" name="@nameof(Item.Number)" value="0" />
-    <button type="submit">Submit</button>
-  </form>
+@model IEnumerable&lt;Item&gt;
 
-  <div id="#items">
-    @foreach(var item in Model) { @await HomeController.ItemPartial.Render(Html,
-    item); }
-  </div></Item
->
+<form hx-post="/add-item" hx-target="#items" hx-swap="afterbegin">
+  <input type="text" name="@nameof(Item.Name)" required />
+  <input type="number" name="@nameof(Item.Number)" value="0" />
+  <button type="submit">Submit</button>
+</form>
+
+<div id="#items">
+  @foreach(var item in Model) { @await
+  HomeController.ItemPartial.Render(Html,item); }
+</div>
 ```
