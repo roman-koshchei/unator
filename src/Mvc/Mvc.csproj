@@ -18,4 +18,8 @@
     <ProjectReference Include="..\Unator\Unator.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Lib\" />
+  </ItemGroup>
+
 </Project>

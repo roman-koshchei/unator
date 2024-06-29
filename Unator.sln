@@ -11,6 +11,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Unator.Extensions", "src\Un
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Mvc", "src\Mvc\Mvc.csproj", "{097C0418-42E1-4E86-968A-C0960E13A498}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Build", "src\Build\Build.csproj", "{5065616A-67CB-483F-8125-633D43A1699D}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -33,6 +35,10 @@ Global
 		{097C0418-42E1-4E86-968A-C0960E13A498}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{097C0418-42E1-4E86-968A-C0960E13A498}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{097C0418-42E1-4E86-968A-C0960E13A498}.Release|Any CPU.Build.0 = Release|Any CPU
+		{5065616A-67CB-483F-8125-633D43A1699D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{5065616A-67CB-483F-8125-633D43A1699D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{5065616A-67CB-483F-8125-633D43A1699D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{5065616A-67CB-483F-8125-633D43A1699D}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

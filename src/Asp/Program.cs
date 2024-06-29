@@ -1,4 +1,5 @@
 using Asp.Routes;
+using Microsoft.AspNetCore.Http.HttpResults;
 using System.Diagnostics.CodeAnalysis;
 using System.Text;
 using Unator;
@@ -6,10 +7,15 @@ using Unator;
 var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddHealthChecks();
 
+
 var app = builder.Build();
 
 app.UseHttpsRedirection();
 app.MapHealthChecks("/healthz");
+
+app.MapGet("/views", () =>
+{
+});
 
 var landing = U.Route(
     path: U.Path("/"),

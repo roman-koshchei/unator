@@ -10,15 +10,20 @@ namespace Unator.Extensions.Mvc;
 /// </summary>
 /// <typeparam name="T">Model type, like props</typeparam>
 /// <param name="Path">Path to view file (.cshtml)</param>
-public record Partial<T>(string Path)
+public record View<T>(string Path)
 {
     /// <summary>
     /// Provides IActionResult that can be returned from controller.
     /// Used inside of controllers.
     /// </summary>
-    public PartialViewResult Result(Controller controller, T model)
+    public PartialViewResult PartialResult(Controller controller, T model)
     {
         return controller.PartialView(Path, model);
+    }
+
+    public ViewResult ViewResult(Controller controller, T model)
+    {
+        return controller.View(Path, model);
     }
 
     /// <summary>
@@ -30,3 +35,21 @@ public record Partial<T>(string Path)
     }
 }
 
+
+public record View(string Path)
+{
+    public PartialViewResult PartialResult(Controller controller)
+    {
+        return controller.PartialView(Path);
+    }
+
+    public ViewResult ViewResult(Controller controller)
+    {
+        return controller.View(Path);
+    }
+
+    public Task<IHtmlContent> RenderAsPartial(IHtmlHelper htmlHelper)
+    {
+        return htmlHelper.PartialAsync(Path);
+    }
+}
