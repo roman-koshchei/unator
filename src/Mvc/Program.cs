@@ -1,7 +1,11 @@
+using Mvc.Lib;
+
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 builder.Services.AddControllersWithViews();
+
+builder.Services.AddScoped<ViewsRender>();
 
 var app = builder.Build();
 
