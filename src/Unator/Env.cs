@@ -37,7 +37,7 @@ public static class EnvExample
     public static void Run()
     {
         Env.LoadFile("./.env");
-    
+
         var errors = Env.Ensure();
         if (errors.Count > 0)
         {
@@ -61,7 +61,7 @@ public static class EnvExample
 /// </summary>
 public class Env
 {
-    private static INewEnvStrategy strategy = new NewEnvThrowStrategy();
+    private static IEnvStrategy strategy = new EnvThrowStrategy();
 
     /// <summary>
     /// Load environment variables from file if file exists.
@@ -90,7 +90,7 @@ public class Env
     /// <returns>Exceptions appeared during initialization of Env classes</returns>
     public static List<Exception> Ensure()
     {
-        var collectStrategy = new NewEnvCollectStrategy();
+        var collectStrategy = new EnvCollectStrategy();
         strategy = collectStrategy;
 
         var types = AppDomain.CurrentDomain
@@ -187,14 +187,14 @@ public class Env
     }
 }
 
-internal interface INewEnvStrategy
+internal interface IEnvStrategy
 {
     public string GetRequired(string key);
 
     public T GetRequired<T>(string key) where T : IParsable<T>;
 }
 
-internal class NewEnvThrowStrategy : INewEnvStrategy
+internal class EnvThrowStrategy : IEnvStrategy
 {
     public T? GetOptionalVal<T>(string key) where T : struct, IParsable<T>
     {
@@ -223,7 +223,7 @@ internal class NewEnvThrowStrategy : INewEnvStrategy
     }
 }
 
-internal class NewEnvCollectStrategy : INewEnvStrategy
+internal class EnvCollectStrategy : IEnvStrategy
 {
     public List<Exception> Errors { get; } = [];
 

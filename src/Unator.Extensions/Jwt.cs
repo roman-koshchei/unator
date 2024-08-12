@@ -8,17 +8,12 @@ namespace Unator.Extensions;
 /// <summary>Store secrets to create JWT token.</summary>
 public record JwtSecrets(string Issuer, string Audience, string Secret);
 
-public class Jwt
+public class Jwt(JwtSecrets secrets)
 {
     public const string Uid = "uid";
     public const string Version = "version";
 
-    private readonly JwtSecrets secrets;
-
-    public Jwt(JwtSecrets secrets)
-    {
-        this.secrets = secrets;
-    }
+    private readonly JwtSecrets secrets = secrets;
 
     public string Token(string uid, int version)
     {
