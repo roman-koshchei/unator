@@ -116,8 +116,6 @@ public class EmailWorker(IServiceProvider provider, ILogger<EmailWorker> logger)
                         _ = await db.Receivers
                             .Where(x => x.EmailId == email.Id && x.ContactId == receiver.ContactId)
                             .ExecuteDeleteAsync(CancellationToken.None);
-
-                        //await DeletePendingEmailFromDb(db, email);
                     }
                     catch
                     {

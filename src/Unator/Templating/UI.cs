@@ -15,6 +15,8 @@ public class UI
     public static Tag Form => new("form");
     public static ATag A => new("a");
     public static Tag H1 => new("h1");
+    public static Tag H2 => new("h2");
+    public static Tag Hgroup => new("hgroup");
     public static Tag Div => new("div");
     public static Tag Textarea => new("textarea");
     public static Tag Select => new("select");
@@ -24,6 +26,13 @@ public class UI
     public static Tag Footer => new("footer");
     public static Tag Fieldset => new("fieldset");
     public static Tag Blockquote => new("blockquote");
+
+    public static Tag Table => new("table");
+    public static Tag Thead => new("thead");
+    public static Tag Tbody => new("tbody");
+    public static Tag Tr => new("tr");
+    public static Tag Th => new("th");
+    public static Tag Td => new("td");
 
     public static string Text(string text) => HttpUtility.HtmlEncode(text);
 

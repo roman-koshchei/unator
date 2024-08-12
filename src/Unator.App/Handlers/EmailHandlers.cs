@@ -7,7 +7,6 @@ using Unator.App.Services;
 using Unator.Extensions;
 using Unator.Extensions.Routing;
 using Unator.Templating;
-using static Unator.Templating.UI;
 
 namespace Unator.App.Handlers;
 
@@ -20,34 +19,35 @@ public class EmailHandlers
         builder.MapGet(BroadcastRoute.Pattern, BroadcastGet);
         builder.MapPost(BroadcastRoute.Pattern, BroadcastPost).DisableAntiforgery();
 
-        builder.MapPost(ContactRoute.Pattern, ContactPost).DisableAntiforgery();
+        builder.MapGet(ContactRoute.Pattern, ContactsGet);
+        builder.MapPost(ContactRoute.Pattern, ContactsPost).DisableAntiforgery();
     }
 
     public static readonly UnatorRoute SendEmailRoute = UnatorRoute.New("email");
 
     public static async Task SendEmailHandler(HttpContext ctx)
     {
-        var html = Componnents.BaseLayout("Email", "Creation of email page").Wrap(Form.Class("grid").Wrap(
-            Div.Wrap(
-                   Label[
+        var html = Componnents.BaseLayout("Email", "Creation of email page").Wrap(UI.Form.Class("grid").Wrap(
+            UI.Div.Wrap(
+                   UI.Label[
                        "Email preset",
-                       Select.Wrap(
-                           Option.Flag("selected").Attr("value", "")["Use new email sender"],
-                           Option["Roman Koshchei - roman@flurium.com"],
-                           Option["Flurium - roman@flurium.com"]
+                       UI.Select.Wrap(
+                           UI.Option.Flag("selected").Attr("value", "")["Use new email sender"],
+                           UI.Option["Roman Koshchei - roman@flurium.com"],
+                           UI.Option["Flurium - roman@flurium.com"]
                        ),
-                       Small["If you select preset then it's prioritized over inputs"]
+                       UI.Small["If you select preset then it's prioritized over inputs"]
                    ],
-                   Div.Class("grid")[
-                       Label["Your name", Input.Placeholder("Roman Koshchei")],
-                       Label["Your email", Input.Placeholder("email@example.com")]
+                   UI.Div.Class("grid")[
+                       UI.Label["Your name", UI.Input.Placeholder("Roman Koshchei")],
+                       UI.Label["Your email", UI.Input.Placeholder("email@example.com")]
                    ],
-                   P.Wrap(Label.Wrap(Input.Attr("type", "checkbox"), "Save sender?")),
-                   Label.Wrap("Subject", Input.Placeholder("Story about ...")),
-                   Button["Send"]
+                   UI.P.Wrap(UI.Label.Wrap(UI.Input.Attr("type", "checkbox"), "Save sender?")),
+                   UI.Label.Wrap("Subject", UI.Input.Placeholder("Story about ...")),
+                   UI.Button["Send"]
                ),
-               Div.Wrap(
-                   Label.Wrap("Markdown content", Textarea.Attr("rows", "15").Placeholder(
+               UI.Div.Wrap(
+                   UI.Label.Wrap("Markdown content", UI.Textarea.Attr("rows", "15").Placeholder(
                        "# Heading 1 \n\n Some content of paragraph \n\n - list item 1"
                    ))
                )
@@ -129,7 +129,57 @@ public class EmailHandlers
         ctx.Response.Redirect(BroadcastRoute.Url());
     }
 
-    public static readonly UnatorRoute ContactRoute = BroadcastRoute.Add("contact");
+    public static readonly UnatorRoute ContactRoute = UnatorRoute.New("contacts");
+
+    public static async Task ContactsGet(
+       HttpContext ctx,
+       [FromServices] UnatorDb db,
+       [FromQuery] string? email
+    )
+    {
+        IQueryable<DbContact> query = db.Contacts;
+        if (email != null) { query = query.Where(x => x.Email.StartsWith(email)); }
+
+        var contacts = await query.Take(50).AsNoTracking().ToListAsync();
+        var html = Componnents.BaseLayout("Contacts").Wrap(
+            UI.Hgroup[
+                UI.H1["Contacts"],
+                UI.H2["List of all emails that are or were subscribed"]
+            ],
+            UI.Form.Attr("method", "POST").Attr("action", ContactRoute.Url())[
+                UI.Label["Add new contact"],
+                UI.Fieldset.Role("group")[
+                    UI.Input.Name(nameof(ContactForm.Email)).Type("email").Placeholder("Email of Contact"),
+                    UI.Button["Add"]
+                ]
+            ],
+            UI.Form.Attr("action", ContactRoute.Url()).Role("search")[
+                UI.Input.Name("email").Type("search").Placeholder("Search email").Attr("value", email ?? ""),
+                UI.Button["Search"]
+            ],
+            UI.Div.Class("overflow-auto")[
+                UI.Table.Class("striped")[
+                    UI.Thead[
+                        UI.Tr[
+                            UI.Th["Email"],
+                            UI.Th["Subscribed"],
+                            UI.Th["Created"]
+                        //UI.Th["Id"]
+                        ]
+                    ],
+                    UI.Tbody[UI.Many(
+                        contacts.Select(x => UI.Tr[
+                            UI.Th[x.Email],
+                            UI.Td[x.Subscribed ? "True" : "False"],
+                            UI.Td[x.Created.ToString("f")]
+                        //UI.Th[x.Id]
+                        ])
+                    )]
+                ]
+            ]
+        );
+        await ctx.Response.WriteAsync(html);
+    }
 
     public class ContactForm
     {
@@ -137,7 +187,7 @@ public class EmailHandlers
         public string Email { get; } = string.Empty;
     }
 
-    public static async Task ContactPost(
+    public static async Task ContactsPost(
        HttpContext ctx,
        [FromServices] UnatorDb db,
        [FromForm] ContactForm form
@@ -148,5 +198,6 @@ public class EmailHandlers
             await db.Contacts.AddAsync(new() { Email = form.Email });
             await db.SaveChangesAsync();
         }
+        ctx.Response.Redirect(ContactRoute.Url());
     }
 }
